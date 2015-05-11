@@ -1,0 +1,160 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Araç Yönet" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+<br></br>
+
+  
+    <h:panelGrid columns="2" >  
+	    <h:outputLabel value="Plaka" ></h:outputLabel>  
+		<h:inputText value="#{vehicleController.plate}"> </h:inputText>
+		
+		    
+	    <p:commandButton value="Ara"  id="buttonStart"   update=":form2:dataGrid" actionListener="#{vehicleController.search}"  />
+	    <p:commandButton   oncomplete="PF('createUser').show()" rendered="#{vehicleController.isAdmin}" update=":form4:displayCreate,:form4:createUserId" action="#{vehicleController.reset}" value="Yeni Oluştur"/>  
+           
+<!--         <p:commandButton   oncomplete="dlg.show()" immediate="true"   value="Yeni Kullanıcı"/>   -->
+              
+            
+	    
+    </h:panelGrid> 
+    
+ 
+</h:form>  
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+   <h:commandLink>
+        <p:graphicImage url="/images/excel.png" />
+        <p:dataExporter type="xls" target="dataGrid" fileName="data" pageOnly="true"/>
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/pdf.png" />
+        <p:dataExporter type="pdf" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/csv.png" />
+        <p:dataExporter type="csv" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/xml.png" />
+        <p:dataExporter type="xml" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+   
+    <p:dataTable id="dataGrid" var="userItem" value="#{vehicleController.vehicleList}"
+    paginator="true" paginatorPosition="bottom" rows="30"
+    >
+    	<f:facet name="header">  
+            Araç Listesi
+        </f:facet>  
+
+        <p:column headerText="Araç Plaka" style="width:24%">
+            <h:outputText value="#{userItem.plate}" />
+        </p:column>
+        
+        <p:column headerText="Cihaz" style="width:24%">
+            <h:outputText value="#{userItem.device.msisdn}" />
+        </p:column>
+        
+        <p:column headerText="Şuba" style="width:24%">
+            <h:outputText value="#{userItem.branch.name}" />
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Güncelle" rendered="#{vehicleController.isAdmin}">
+                <p:commandButton id="selectButton" update=":form4:displayCreate" immediate="true" oncomplete="PF('createUser').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{vehicleController.vehicle}" />
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Sil" rendered="#{vehicleController.isAdmin}">
+                <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{vehicleController.delete}" oncomplete="PF('createUser').hide()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{vehicleController.vehicle}" />
+                	<p:confirm header="Uyarı" message="Emin misiniz?" icon="ui-icon-alert" />
+            	</p:commandButton>
+        </p:column>
+    </p:dataTable>
+    
+</h:form>
+</p:panel>
+
+<h:form id="form4">
+ <p:dialog header="Create User" widgetVar="createUser" resizable="true" id="createUserId" >  
+         
+ 
+          <p:messages id="messageCreateUser" showDetail="true" autoUpdate="true"/> 
+          <h:panelGrid columns="4" id="displayCreate" >  
+		    <h:outputLabel value="Plaka" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username2" value="#{vehicleController.vehicle.plate}" required="true" requiredMessage="Plaka Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username2" style="color:red"/>
+			
+						
+			<h:outputLabel value="Cihaz" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:selectOneMenu id="suburbs2" value="#{vehicleController.vehicle.device.id}">
+				<f:selectItems value="#{vehicleController.deviceOptions}" />
+			</p:selectOneMenu>  
+			<h:message  for="suburbs2" style="color:red"/>
+			
+			
+			<h:outputLabel value="Şube" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:selectOneMenu id="suburbs3" value="#{vehicleController.vehicle.branch.id}">
+				<f:selectItems value="#{vehicleController.branchOptions}" />
+			</p:selectOneMenu>  
+			<h:message  for="suburbs3" style="color:red"/>
+			
+			
+	    	
+	    	
+	    	 </h:panelGrid> 
+	    	<p:commandButton value="Kaydet" update=":form2:dataGrid"  actionListener="#{vehicleController.create}" />
+			<p:commandButton value="İptal"  onclick="createUser.hide()" />
+   		 
+   		
+   		
+  
+    </p:dialog>  
+    
+
+
+ 
+
+
+
+
+
+
+
+</h:form>
+                    
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>

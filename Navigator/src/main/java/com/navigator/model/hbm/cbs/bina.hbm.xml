@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.cbs.Bina" table="bina">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+ 
+	<property name="name" column="name" type="string"></property>
+	<property name="stringQuery" column="stringQuery" type="string"></property>
+	<property name="lat" column="lat" type="float"></property>
+	<property name="lng" column="lng" type="float"></property>
+	<property name="orijinalLat" column="orijinalLat" type="float"></property>
+	<property name="orijinalLng" column="orijinalLng" type="float"></property>
+	
+	
+	<many-to-one name="Sokak" class="com.nagivator.model.cbs.Sokak" column="sokak" lazy="false" cascade="none" />
+	
+	<property name="complated" column="enabled" type="boolean"></property>
+</class>
+</hibernate-mapping>

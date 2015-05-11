@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+  >
+<ui:composition>
+<div id="middle">
+<div id="subnavigation_outer">
+	<div id="subnavigation">
+
+
+
+	<p:menu>  
+        <p:submenu label="UPS İzleme">  
+            	 <p:menuitem value="Sayısal Değerler" url="/pages/new/summaryValue.jsf" icon="ui-icon-disk"/>
+            	 <p:menuitem value="Grafik Değerler"  url="/pages/new/gaugeValue.jsf" icon="ui-icon-disk"/>    
+        		 <p:menuitem value="Çizgi Değerler"  url="/pages/new/lineValue.jsf" icon="ui-icon-disk"/>  
+        </p:submenu> 		  
+        <p:submenu label="Raporlar"> 
+        		<p:menuitem value="Geçmiş Raporlar"  url="/pages/new/report.jsf" icon="ui-icon-disk"/>
+        		<p:menuitem value="Hata Raporları"  url="/pages/new/upsErrorReport.jsf" icon="ui-icon-disk"/> 
+        		<p:menuitem value="Status Raporları"  url="/pages/new/statusChangeReport.jsf" icon="ui-icon-disk"/> 
+        </p:submenu>
+
+        <p:submenu label="UPS Konfigurasyon" rendered="#{userController.adminCheck}">  
+           		<p:menuitem value="Ups Komutları"  url="/pages/new/admin/commandList.jsf" icon="ui-icon-disk"/>
+           		<p:menuitem value="Ups Ekle"  url="/pages/new/admin/snmp/manageUps.jsf" icon="ui-icon-disk"/>
+           		<p:menuitem value="Snmp Test"  url="/pages/new/admin/snmp/snmpTest.jsf" icon="ui-icon-disk"/>
+        </p:submenu>  
+        <p:submenu label="Yönetim" rendered="#{userController.adminCheck}">  
+           		<p:menuitem value="Kullanıcı Yönetimi"  url="/pages/new/admin/manageUsers.jsf" icon="ui-icon-disk"/>
+           		<p:menuitem value="Şifre Güncelle"      url="/pages/new/admin/changePassword.jsf" icon="ui-icon-disk"/>
+           		<p:menuitem value="Bilgi Güncelle"     url="/pages/new/admin/updateInformation.jsf"  icon="ui-icon-disk" />
+           		<p:menuitem value="Parametre Yönetimi"     url="/pages/new/admin/parameters.jsf"  icon="ui-icon-disk" />
+           		<p:menuitem value="Mail Parametreleri"     url="/pages/new/admin/mailparameters.jsf"  icon="ui-icon-disk" />
+        		<p:menuitem value="SMS Parametreleri"     url="/pages/new/admin/smsparameters.jsf"  icon="ui-icon-disk" />
+        		<p:menuitem value="Alarm Yönetimi"     url="/pages/new/admin/manageAlerts.jsf"  icon="ui-icon-disk" />
+        </p:submenu>  
+         <p:submenu label="Çıkış">  
+           		<p:menuitem value="Çıkış"  url="/login.jsf?state=logout" action="#{loginontroller.logout}" icon="ui-icon-disk"/>
+        </p:submenu> 
+    </p:menu>    
+
+</div>
+</div>
+</div>
+</ui:composition>
+</html>

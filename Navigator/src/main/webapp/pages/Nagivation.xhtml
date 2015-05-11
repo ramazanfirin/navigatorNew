@@ -1,0 +1,305 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+<h:head>
+<title>yeni navigasyon safyası</title>
+	<style type="text/css">
+.ui-widget,.ui-widget .ui-widget {
+	font-size: 12px !important;
+}
+.ui-growl {
+right: 50%;
+
+}
+.gm-style-iw {
+width: 300px; 
+min-height: 150px;
+}
+
+
+</style>
+
+	<h:outputScript library="primefaces" name="gmap/gmap.js" />
+	<script src="http://openlayers.org/api/OpenLayers.js"></script>
+	<script src="js/proj4js-combined.js"></script>	
+<!-- 	<script src="js/navigation.js"></script>		 -->
+</h:head>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+		<div id="container">
+<div id="leftcolumn">
+
+
+
+		
+		<p:panel header="Giriş değerleri" style="border:1px solid;height:500px">
+
+		<p:accordionPanel style="border:1px solid;height:100%" id="accordPanel">
+       
+   
+		 <p:tab title="Detaylı adres girişi">
+<!-- 		 <p:panel id="basic" header="Detaylı adres girişi"> -->
+        <h:form id="detay">
+        <p:messages  id="messages" autoUpdate="true"/>
+        <h:panelGrid columns="3">
+        	<h:outputLabel value="İlçe"> </h:outputLabel>
+        	<h:outputLabel value=":"> </h:outputLabel>
+        	<p:selectOneMenu id="ilce" value="#{navigator2.ilce}" style="width:150px;" required="true" requiredMessage="İlce Bos Olmaz">
+	           <f:selectItems value="#{navigator2.ilceList}"> </f:selectItems>
+	            <p:ajax event="change" update="mahalle,sokak,bina" listener="#{navigator2.ilceOnChange}" />
+        	</p:selectOneMenu>
+        	
+        	
+        	<h:outputLabel value="Mahelle"> </h:outputLabel>
+        	<h:outputLabel value=":"> </h:outputLabel>
+        	<p:selectOneMenu id="mahalle" value="#{navigator2.mahalle}" style="width:150px;" required="true"  requiredMessage="Mahalle Bos Olmaz">
+	           <f:selectItems value="#{navigator2.mahalleList}"> </f:selectItems>
+	            <p:ajax event="change" update="sokak" listener="#{navigator2.mahalleOnChange}" />
+        	</p:selectOneMenu>
+        	
+        	<h:outputLabel value="Sokak"> </h:outputLabel>
+        	<h:outputLabel value=":"> </h:outputLabel>
+        	<p:selectOneMenu id="sokak" value="#{navigator2.sokak}" style="width:150px;" required="true" requiredMessage="Sokak Bos Olmaz">
+	           <f:selectItems value="#{navigator2.sokakList}"> </f:selectItems>
+	            <p:ajax event="change" update="bina" listener="#{navigator2.sokakOnChange}" />
+        	</p:selectOneMenu>
+        	
+        	<h:outputLabel value="Bina"> </h:outputLabel>
+        	<h:outputLabel value=":"> </h:outputLabel>
+        	<p:selectOneMenu id="bina" value="#{navigator2.bina}" style="width:150px;" required="true" requiredMessage="Bina Bos Olmaz">
+	           <f:selectItems value="#{navigator2.binaList}"> </f:selectItems>
+	          </p:selectOneMenu>
+	        
+	        <h:outputLabel value=""> </h:outputLabel> 
+	         <h:outputLabel value=""> </h:outputLabel>  
+           <p:commandButton value="Koordinat Bul" actionListener="#{navigator2.getKapiNo}" update=":formMap:map"></p:commandButton>  
+            
+        </h:panelGrid>
+<!--     </p:panel> -->
+</h:form>
+    </p:tab>
+    <p:tab title="Önemli Yer Arama" >
+		<h:form id="importantPlaceForm">
+		 <p:messages id="messages"  autoUpdate="true"/>
+		<h:inputHidden id="hiddenLat" value="#{navigator2.hiddenLat}" />
+		<h:inputHidden id="hiddenLng" value="#{navigator2.hiddenLng}" />
+		
+    		 <h:panelGrid columns="2" style="margin-left:-5px">
+    		 	<h:outputLabel id="address1" value="İsim"></h:outputLabel>
+        		<h:inputText id="address3" value="#{navigator2.importantPlace}" style="width:200px;"></h:inputText>
+				
+				<p:remoteCommand name="rc" update=":formMap:map" actionListener="#{navigator2.getImportantPlaceCoordinates}" />
+<!-- 				<p:commandButton value="Koordinat Bul" onclick="rc()" update=":formMap:map"></p:commandButton>   -->
+        	</h:panelGrid>	
+
+    </h:form>
+		</p:tab>
+    	<p:tab title="Koorinat Girişi">
+  <h:form id="manuelInputForm">
+   <p:messages  id="messages" autoUpdate="true"/>
+    		 <h:panelGrid columns="3">
+        		<h:outputLabel value="Enlem"> </h:outputLabel>
+        		<h:outputLabel value=":"> </h:outputLabel>
+        		<p:inputText id="manuelInputlat" value="#{navigator2.manuelInputlat}" required="true" requiredMessage="Enlem Bos Olamaz"></p:inputText>
+        		
+        		<h:outputLabel value="Boylam"> </h:outputLabel>
+        		<h:outputLabel value=":"> </h:outputLabel>
+        		<p:inputText id="manuelInputlng" value="#{navigator2.manuelInputlng}" required="true" requiredMessage="Boylam Bos Olamaz"></p:inputText>
+        		
+        	<h:outputLabel value=""> </h:outputLabel>
+        	<h:outputLabel value=""> </h:outputLabel>	
+             <p:commandButton value="İşaretle" actionListener="#{navigator2.getManuelInputData}" update=":formMap:map"></p:commandButton>
+        	</h:panelGrid>	
+</h:form>
+    	</p:tab>
+    	
+    	<p:tab title="Meskun Mahal Arama">
+  <h:form id="meskunMahalForm">
+   <p:messages  id="messages" autoUpdate="true"/>
+    		 <h:panelGrid columns="3">
+        		<h:outputLabel value="isim"> </h:outputLabel>
+        		<h:outputLabel value=":"> </h:outputLabel>
+        		<p:autoComplete id="dd" dropdown="true" value="#{navigator2.meskunMahal}" forceSelection="true" required="true" requiredMessage="Meskun Mahal ismi bos olamaz" completeMethod="#{navigator2.completeText}" />
+        		
+        		
+        	<h:outputLabel value=""> </h:outputLabel>
+        	 <p:commandButton value="Temizle" actionListener="#{navigator2.hideMeskunMahal}" immediate="true" update=":formMap:map"></p:commandButton>
+             <p:commandButton value="İşaretle" actionListener="#{navigator2.showOneMeskunMahal}" update=":formMap:map"></p:commandButton>
+        	</h:panelGrid>	
+</h:form>
+    	</p:tab>
+    	</p:accordionPanel>
+    	
+    	<br></br>
+    	<h:form id="mapControl">
+    	<p:panel header="Katman Kontrol">
+    	<h:panelGrid columns="3">
+    		<h:outputLabel value="İşaretleri Temizle"> </h:outputLabel>
+    		<h:outputLabel value=":"> </h:outputLabel>
+    		 <p:commandButton value="Temizle" actionListener="#{navigator2.clearMarkers}" update=":formMap:map"></p:commandButton>
+    		 
+    		<h:outputLabel value="Rota Temizle"> </h:outputLabel>
+    		<h:outputLabel value=":"> </h:outputLabel>
+    		 <p:commandButton value="Temizle"  update=":formMap:map"></p:commandButton>
+    		 
+    		<h:outputLabel value="Meskun Mahal Göster"> </h:outputLabel>
+    		<h:outputLabel value=":"> </h:outputLabel>
+    		<p:selectBooleanCheckbox value="#{navigator2.showMeskunMahal}">
+            	<p:ajax update=":formMap:map" listener="#{navigator2.visualiteMeskunMahal}" />
+        	</p:selectBooleanCheckbox>
+    		  
+    		  
+    	</h:panelGrid>
+    	</p:panel>
+    	</h:form>
+    	</p:panel>
+</div>
+		
+<div id="rightcolumn">
+
+
+<h:form id="formMap">
+
+<p:gmap id="map" center="38.72956137445706, 35.47995459062804" zoom="14" fitBounds="true" 
+					type="HYBRID" style="width:850px;height:550px;margin-left:5px"
+					model="#{navigator2.emptyModel}"
+					onPointClick="handlePointClick2(event);"
+					binding="#{navigator2.map}"
+					widgetVar="map">
+					<p:ajax event="overlaySelect" oncomplete="PF('sendDialog').show()"
+						listener="#{navigator2.onMarkerSelect}"  update=":sendDialogForm:datatable" /> >
+				
+
+				</p:gmap>
+
+</h:form>
+
+<p:dialog widgetVar="dlg" showEffect="fade" closable="false">
+
+					<h:form id="dialogForm">
+					<h:inputHidden id="lat" value="#{navigator2.lat}" />
+					<h:inputHidden id="lng" value="#{navigator2.lng}" />
+					<h:inputHidden id="centerlat" value="#{navigator2.centerLat}" />
+		            <h:inputHidden id="centerlng" value="#{navigator2.centerLng}" />
+					<h:inputHidden id="zoom" value="#{navigator2.centerZoom}" />
+					
+					<p:messages id="messages" autoUpdate="true"/>
+					
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Bu nokta işaretlensin mi?" />
+
+
+						<f:facet name="footer">
+							<p:commandButton value="Isaretle"
+								actionListener="#{navigator2.addMarkerFromMap}" update="messages,:formMap:map"
+								oncomplete="markerAddComplete()" />
+								
+							<p:commandButton value="İncele"
+								actionListener="#{navigator2.investigatePoint}" oncomplete="PF('propertiesDialog').show()"
+								update=":propertiesForm:datatable"/>	
+								 
+							<p:commandButton value="Rota Ciz" onclick="drawDirection2();" oncomplete="return cancel2()"
+								 
+								 />		 
+							<p:commandButton value="Cancel" actionListener="#{navigator.cancelDialog}"    onclick="return cancel2()" />
+						</f:facet>
+					</h:panelGrid>
+</h:form>
+
+				</p:dialog>
+				
+				
+				
+				
+				
+				<p:dialog widgetVar="sendDialog" showEffect="fade" closable="true" width="400">
+					<h:form id="sendDialogForm">
+				<p:messages id="messages" autoUpdate="true"/>
+					<p:dataTable id="datatable" var="item" value="#{navigator2.marker.data}">
+						<p:column headerText="İsim">
+							<h:outputText value="#{item.name}" />
+						</p:column>
+
+						<p:column headerText="Özellik">
+							<h:outputText value="#{item.value}" />
+						</p:column>
+
+				   </p:dataTable>
+					
+					<br/>
+					<p:panel id="Parametreler"  header="Parametreler">
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Araç Plakası"> </h:outputLabel>
+						<p:selectOneMenu id="suburbs2" value="#{navigator2.vehicle.id}" style="width:250px">
+								<f:selectItems value="#{deviceController.vehicleOptions}" />
+						</p:selectOneMenu>  
+					
+						<h:outputLabel value="Aciklama"> </h:outputLabel>
+						<h:inputTextarea value="#{navigator2.description}" style="width:250px" required="true" requiredMessage="Not alani bos olamaz"></h:inputTextarea>
+						
+						<h:outputLabel value="Öncelik"> </h:outputLabel>
+						<p:selectOneMenu id="suburbs29" value="#{navigator2.priority.id}" style="width:250px">
+								<f:selectItem itemValue="1" itemLabel="Yüksek"/>
+								<f:selectItem itemValue="2" itemLabel="Orta"/>
+								<f:selectItem itemValue="3" itemLabel="Düşük"/>
+						</p:selectOneMenu>  
+					</h:panelGrid>
+					
+				</p:panel>
+					<h:panelGrid columns="2">
+						
+
+						<f:facet name="footer">
+							<p:commandButton value="Gönder" rendered="false"
+								actionListener="#{navigator2.sendCoordinate}" update="messages"
+								oncomplete="hideDialog()" />
+								
+							<p:commandButton value="Gönder(Yönlendirme Hemen Başlasın)"
+								actionListener="#{navigator2.sendCoordinateImmediately}" update="messages"
+								
+								/>	
+						
+						
+
+							
+							
+							<p:commandButton value="İptal" onclick="hideDialog()" />
+						</f:facet>
+					</h:panelGrid>
+
+</h:form>
+				</p:dialog>
+				
+				<p:dialog widgetVar="propertiesDialog" showEffect="fade" closable="true" width="400">
+					<h:form id="propertiesForm">
+					<h:inputHidden id="distance" value="#{navigator2.distance}"></h:inputHidden>
+					<h:inputHidden id="duration" value="#{navigator2.duration}"></h:inputHidden>
+					<h:inputHidden id="remoteAddress" value="#{navigator2.remoteAddress}"></h:inputHidden>
+					<p:messages id="messages" autoUpdate="true"/>
+					
+					<p:dataTable id="datatable" var="item" value="#{navigator2.userMessages}">
+						<p:column headerText="İsim">
+							<h:outputText value="#{item.name}" />
+						</p:column>
+
+						<p:column headerText="Özellik">
+							<h:outputText value="#{item.value}" />
+						</p:column>
+
+				  </p:dataTable>
+				  <p:remoteCommand name="showRota" update="datatable" actionListener="#{navigator2.showRotaValues}" oncomplete="PF('propertiesDialog').show()" />
+				  </h:form>
+				  </p:dialog>
+
+</div>
+</div>
+	
+	</ui:define>
+</ui:composition>
+
+</html>

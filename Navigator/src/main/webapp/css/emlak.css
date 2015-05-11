@@ -1,0 +1,646 @@
+body,html {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-width: 850px;
+}
+
+/* position:absolute for all browsers - the whole page scrolls */
+div#headerregion {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	height: 100px;
+}
+
+/* position:fixed for modern browsers - header and footer do not scroll */
+body>div#headerregion {
+	position: fixed;
+}
+
+div#header {
+	background-image: url(/ebs/images/ibb.jpg);
+	background-repeat: repeat-x;
+	height: 100px;
+	margin: 0 auto;
+	z-index: 20;
+}
+
+div#ibb_logo {
+	background-image: url(/ebs/images/ibb_logo.gif);
+	background-repeat: no-repeat;
+	height: 100px;
+	width: 850px;
+	margin: 0 auto;
+	z-index: 20;
+}
+
+/* set a left margin to compensate for IE/Win always making room for a scrollbar */
+div#middleregion {
+	padding: 100px 0 0 0;
+	margin-left: 0;
+	padding-bottom: 40px;
+	height: 650px;
+}
+
+/* set left margin for modern browsers */
+body>div#middleregion {
+	margin-left: 0;
+}
+
+div#middle {
+	margin: 0 auto;
+}
+
+div#sidebar {
+	width: 150px;
+	float: left;
+}
+
+div#content {
+	padding: 0 10px;
+	margin-left: 150px;
+	height: 650px;
+}
+
+div#footerregion {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 40px;
+}
+
+body>div#footerregion {
+	position: fixed;
+}
+
+div#footer {
+	height: 40px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+.hata span {
+	display: none;
+}
+
+.hata:hover span {
+	display: block;
+	position: absolute;
+	top: 200px;
+	left: 0;
+	width: 125px;
+	padding: 5px;
+	margin: 10px;
+	z-index: 100;
+	color: #AAA;
+	background: black;
+	font: 10px Verdana, sans-serif;
+	text-align: center;
+}
+
+.messageInfo {
+	padding: 2em;
+	background-image: url(/ebs/images/info.png);
+	background-repeat: no-repeat;
+}
+
+/* Styling rules to make this demo page look nice. */
+body,html {
+	font-family: "Trebuchet MS", Georgia, Verdana, serif;
+	color: #000;
+	background: #aaa;
+}
+
+div#footer {
+	background: #003366;
+	color: #eee;
+}
+
+div#middle,div#sidebar {
+	background: #FFFFDE;
+}
+
+div#content {
+	background: #fff;
+}
+
+h1,h2 {
+	padding: 0;
+	margin: 0;
+}
+
+div#sidebar h2 {
+	padding-left: 1px;
+}
+
+div#footer h2 {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
+
+div #footer p {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+div#footer a {
+	color: #fff;
+}
+
+h1 {
+	font-size: 1.4em;
+	text-align: center;
+	padding-top: 5px;
+}
+
+h2 {
+	font-size: 1.2em;
+	padding-top: 1em;
+	margin-top: 0;
+}
+
+p {
+	margin-bottom: 0;
+	font-size: 0.8em;
+	line-height: 1.4em;
+}
+
+pre {
+	font-size: 0.9em;
+	line-height: 1.4em;
+}
+
+ul {
+	font-size: 0.8em;
+	line-height: 1.4em;
+}
+
+.simpleText {
+	margin-bottom: 0;
+	font-size: 0.8em;
+	line-height: 1.4em;
+}
+
+.heading {
+	font-family: Arial, ans-serif;
+	font-weight: bold;
+	font-size: 10px;
+	color: white;
+	background-color: navy;
+	text-align: center;
+}
+
+.oddRow {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: gray;
+	background-color: orange;
+}
+
+.evenRow {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	color: white;
+	background-color: silver;
+}
+
+.inpGeneral {
+	background-image: url(/ebs/images/cr_frmInputBoxesBack.gif);
+	border-color: #B3B3B3 #E5E3DE #E5E3DE #B3B3B3;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	border-style: solid;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	padding-left: 2px;
+	padding-top: 2px;
+}
+
+.selectedBox {
+	background-image: url(/ebs/images/cr_frmInputBoxesBack.gif);
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000000;
+}
+
+.inpGeneralDisabled {
+	background-image: url(/ebs/images/common/cr_frmInputBoxesBack.gif);
+	border-color: #B3B3B3 #E5E3DE #E5E3DE #B3B3B3;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: gray;
+	background-color: threedlightshadow;
+	border-style: solid;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	padding-left: 2px;
+	padding-top: 2px;
+}
+
+.panelGridColumn {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000000;
+	text-decoration: none;
+}
+
+.panelGridRow {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000000;
+	text-decoration: none;
+}
+
+.panelGridHeader {
+	background-color: #D1E4E4;
+	width: auto;
+}
+
+.odd-row {
+	background-color: #FFFFFF;
+	border: 2px solid #C1DAD7;
+}
+
+.even-row {
+	background-color: #EAF4F4;
+	border: 2px solid #C1DAD7;
+}
+
+.btnH1W1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/cn_btnH1W1.gif);
+	height: 21px;
+	width: 76px;
+	font-size: 9px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.btnH1W4 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/cn_btnH1W1.gif);
+	height: 21px;
+	width: 70px;
+	font-size: 9px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.btnH1W2 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/cn_btnH1W2.gif);
+	height: 21px;
+	width: 107px;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.btnH1W3 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/cn_btnH1W2.gif);
+	height: 21px;
+	width: 250px;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.btnH1W1new {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/btn_H1W1new.gif);
+	height: 21px;
+	width: 76px;
+	padding-left: 15px;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.btnH1W1Long {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/cn_btnH1W1.gif);
+	height: 21px;
+	width: 76px;
+	padding-left: 15px;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 22px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.spacerColumn {
+	background-color: #CCCCCC;
+}
+
+.zoom {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(/ebs/images/zoom.gif);
+	height: 18px;
+	width: 18px;
+	font-size: 10px;
+	font-style: normal;
+	line-height: 20px;
+	font-weight: bold;
+	color: #666666;
+	text-decoration: none;
+	border-style: none;
+	background-color: #FFFFFF;
+	cursor: hand
+}
+
+.dTable {
+	border: 0pt none;
+	width: 100%;
+	text-align: left;
+	background-color: #CCCCCC;
+}
+
+.dtHeader {
+	text-align: left;
+	font: 11px Arial, sans-serif;
+	font-weight: bold;
+	color: #024A86;
+	background: #D1E4E4;
+}
+
+.allColumn {
+	text-align: left;
+	font: 10px Arial, sans-serif;
+	background: white;
+}
+
+.yaziRed {
+	text-align: left;
+	font: 12px Arial, sans-serif;
+	
+	background: white;
+	color: #f90909;
+}
+
+.footerColumn {
+	text-align: right;
+	font: 11px Arial, sans-serif;
+	background: white;
+}
+
+.txtVer11BNavy {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #33407D;
+	text-decoration: none;
+}
+
+.txtVer11Black {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-decoration: none;
+}
+
+.pageTextStyle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-decoration: none;
+	color: #2A2AFF;
+}
+
+.validation {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 12px;
+	color: #FF6600;
+}
+
+#subnavigation {
+	margin-right: 2px;
+	padding: 0px 0px 0px 0px;
+	border: 1px solid #E5E3DE;
+	background-color: #FFFFDE;
+}
+
+#subnavigation_outer {
+	float: left;
+	width: 150px;
+	padding: 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+#subnavigation_outer h1 {
+	font-size: 1.5em;
+	margin: 0px;
+	padding: 0px 0px 15px 0px;
+}
+
+#subnavigation ul li  a {
+	display: block;
+	background-color: #ebebeb;
+	color: #294747;
+	text-decoration: none;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #87A8A8;
+	padding: 2px 10px;
+	margin: 0px;
+}
+
+#subnavigation ul li a:visited {
+	color: #294747;
+}
+
+#subnavigation ul li a:hover {
+	color: #FFFFFF;
+	background-color: #FFCF33;
+}
+
+#subnavigation ul li a:active {
+	color: #294747;
+}
+
+#subnavigation ul li a.selected {
+	font-weight: bold;
+	color: #294747;
+	background-color: #FFFFFF;
+}
+
+#subnavigation ul ul li a {
+	padding: 2px 20px 2px 25px;
+	margin: 0px;
+	background-color: #FFFFFF;
+}
+
+#subnavigation ul ul li ul li a {
+	padding: 2px 20px 2px 30px;
+	margin: 0px;
+}
+
+#subnavigation ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#subnavigation li {
+	margin: 0px;
+	padding: 0px;
+	display: inline;
+}
+
+#subnavigation ul.mypage li a {
+	padding: 2px 20px 2px 20px;
+	margin: 0px;
+	background-color: #EAF4F4;
+}
+
+#subnavigation ul.mypage ul li a:hover {
+	color: #FFFFFF;
+	background-color: #87A8A8;
+}
+
+/* IE5/Mac:  Senza questo il bpop interno crea danni. Questo ha problemi di allineamento verticale,
+approssimativamente corretti da top, ... \*/ /*/
+.itr {
+	display: inline-block;
+	top: 0.15em;
+	line-height: 1.05;
+}
+/**/
+.dr-mpnl-pnl {
+	overflow: auto !important
+}
+
+.rich-mpnl-body {
+	height: 99%;
+	width: 99%;
+	padding: 0px;
+}
+
+.rich-table-cell {
+	height: 12px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.rich-table-header {
+	height: 12px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.rich-mpnl-body .content {
+	padding: 10px;
+}
+
+.popup {
+	background-color: #FF9966;
+	color: #000000;
+	border: 1px solid #000000;
+	font-size: 14px;
+	padding: 4px;
+}
+
+div#tips a {
+	text-decoration: none;
+	border-bottom: 2px solid green;
+	color: #FF0000;
+}
+
+div#tips a:hover {
+	color: #666666;
+	background: #FFFFCC;
+	text-decoration: none;
+}
+
+div#tips a span {
+	display: none;
+}
+
+div#tips a:hover span {
+	display: block;
+	position: absolute;
+	left: 10%;
+	width: 200px;
+	padding: 5px;
+	margin: 10px;
+	z-index: 100;
+	color: #0000CC;
+	background: #FFFFCC;
+	font: 10px Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	border: 1px solid #666666;
+	text-decoration: none;
+}
+
+div#tips p {
+	position: relative
+}

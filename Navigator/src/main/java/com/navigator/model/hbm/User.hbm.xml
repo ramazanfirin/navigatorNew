@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.User" table="Users">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+	<property name="username" column="username" type="string"></property>
+	<property name="password" column="password" type="string"></property>
+	<property name="enabled" column="enabled" type="boolean"></property>
+	
+	<property name="name" column="name" type="string"></property>
+	<property name="surname" column="surname" type="string"></property>
+	<property name="email" column="email" type="string"></property>
+	<property name="phone" column="phone" type="string"></property>
+	
+	<many-to-one name="authority" class="com.nagivator.model.Authority" column="Authority" lazy="false" cascade="all" />
+
+	<property name="sendAlertMail" column="sendAlertMail" type="boolean"></property>
+	<property name="sendAlertSms" column="sendAlertSms" type="boolean"></property>
+</class>
+</hibernate-mapping>

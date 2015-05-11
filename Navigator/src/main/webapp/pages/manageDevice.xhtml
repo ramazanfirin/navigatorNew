@@ -1,0 +1,147 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Cihazları Yönet" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+<br></br>
+
+  
+    <h:panelGrid columns="2" >  
+	    <h:outputLabel value="Numara" ></h:outputLabel>  
+		<h:inputText value="#{deviceController.msisdn}"> </h:inputText>
+		
+		    
+	    <p:commandButton value="Ara"  id="buttonStart"   update=":form2:dataGrid" actionListener="#{deviceController.search}"  />
+	    <p:commandButton   oncomplete="PF('createUser').show()" rendered="#{userController.isAdmin}" update=":form4:displayCreate,:form4:createUserId" action="#{deviceController.reset}" value="Yeni Cihaz"/>  
+           
+<!--         <p:commandButton   oncomplete="dlg.show()" immediate="true"   value="Yeni Kullanıcı"/>   -->
+              
+            
+	    
+    </h:panelGrid> 
+    
+ 
+</h:form>  
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+   <h:commandLink>
+        <p:graphicImage url="/images/excel.png" />
+        <p:dataExporter type="xls" target="dataGrid" fileName="data" pageOnly="true"/>
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/pdf.png" />
+        <p:dataExporter type="pdf" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/csv.png" />
+        <p:dataExporter type="csv" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/xml.png" />
+        <p:dataExporter type="xml" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+   
+    <p:dataTable id="dataGrid" var="userItem" value="#{deviceController.deviceList}"
+    paginator="true" paginatorPosition="bottom" rows="30"
+    >
+    	<f:facet name="header">  
+            Cihaz Listesi
+        </f:facet>  
+
+        <p:column headerText="Cihaz Numara" style="width:24%">
+            <h:outputText value="#{userItem.msisdn}" />
+        </p:column>
+        
+        <p:column headerText="İmei" style="width:24%">
+            <h:outputText value="#{userItem.imei}" />
+        </p:column>
+        
+        <p:column headerText="Kayıtlı Mı?" style="width:24%">
+            <h:outputLabel value="Evet" rendered="#{! empty userItem.regId}"> </h:outputLabel>
+ 			<h:outputLabel value="Hayir" rendered="#{ empty userItem.regId}"> </h:outputLabel>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Güncelle" rendered="#{deviceController.isAdmin}">
+                <p:commandButton id="selectButton" update=":form4:displayCreate" immediate="true" oncomplete="PF('createUser').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{deviceController.device}" />
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Sil" rendered="#{userController.isAdmin}">
+                <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{deviceController.deleteDevice}" oncomplete="PF('createUser').hide()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{deviceController.device}" />
+                	<p:confirm header="Uyarı" message="Emin misiniz?" icon="ui-icon-alert" />
+            	</p:commandButton>
+        </p:column>
+    </p:dataTable>
+    
+</h:form>
+</p:panel>
+
+<h:form id="form4">
+ <p:dialog header="Create User" widgetVar="createUser" resizable="true" id="createUserId" >  
+         
+ 
+          <p:messages id="messageCreateUser" showDetail="true" autoUpdate="true"/> 
+          <h:panelGrid columns="4" id="displayCreate" >  
+		    <h:outputLabel value="Msisdn" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username2" value="#{deviceController.device.msisdn}" required="true" requiredMessage="msisdn Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username2" style="color:red"/>
+			
+			<h:outputLabel value="İmei" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="name" value="#{deviceController.device.imei}"  required="true" requiredMessage="İmei Boş olamaz" label="isim"> </h:inputText>
+			<h:message for=":form4:name"  style="color:red"/>
+			
+	    	 </h:panelGrid> 
+	    	<p:commandButton value="Kaydet" update=":form2:dataGrid"  actionListener="#{deviceController.createDevice}" />
+			<p:commandButton value="İptal"  onclick="createUser.hide()" />
+   		 
+   		
+   		
+  
+    </p:dialog>  
+    
+
+
+ 
+
+
+
+
+
+
+
+</h:form>
+                    
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>

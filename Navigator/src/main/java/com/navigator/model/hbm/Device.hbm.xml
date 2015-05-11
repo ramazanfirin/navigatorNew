@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.Device" table="Device">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+	
+	<property name="msisdn" column="msisdn" type="string"></property>
+	<property name="imei" column="imei" type="string"></property>
+
+<!-- 	<many-to-one name="vehicle" class="com.nagivator.model.Vehicle"  column="vehicle" lazy="false" cascade="none" /> -->
+
+	<property name="regId" column="RegId" type="string"></property>
+	<property name="enabled" column="enabled" type="boolean"></property>
+</class>
+</hibernate-mapping>

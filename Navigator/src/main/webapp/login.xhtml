@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jstl/core" 
+      xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+<link href="#{request.contextPath}/css/default.css"  rel="stylesheet" type="text/css"/>
+<link href="#{request.contextPath}/css/960.css"  rel="stylesheet" type="text/css"/>
+
+<link rel="stylesheet" href="#{request.contextPath}/css/style.css" type="text/css" media="screen" />
+</h:head>
+<h:body>
+
+<f:view>
+		<center>
+		<h:panelGrid width="380px" columns="2" border="0">
+			<p:panel header="UpsViewer_v1 ">
+				<h:form id="LoginForm">
+				<p:messages autoUpdate="true" id="msgs" showDetail="true" showSummary="true" />
+<!-- 					<p:outputLabel value="Giriş yapmak için Kullanıcı Adı ve Şifrenizi yazınız."/>  -->
+					<h:panelGrid id="lpg" columns="2" >
+						<p:outputLabel value="Kullanıcı Adı"/> 
+						<h:inputText id="username" value="#{loginController.username}" />
+						<h:outputText value=""/>
+						<h:message for="username" styleClass="errors"/>
+					
+
+						<h:outputText value="Şifre"/> 
+						<h:inputSecret id="password" value="#{loginController.password}"/>
+						<h:outputText value=""/>
+						<h:message for="password" styleClass="errors"/>
+					
+
+						<h:outputText value=""/>
+						<h:commandButton value="Login" action="#{loginController.login}" />
+						
+						<br></br>
+						<h:outputText value=""/>
+						<h:outputLabel value="Yetkili kullanıcı:" > </h:outputLabel>
+						<h:outputLabel value="admin/admin" style="color:red"> </h:outputLabel>
+						
+						<h:outputLabel value="Normal kullanıcı:" > </h:outputLabel>
+						<h:outputLabel value="user/user" style="color:red"> </h:outputLabel>
+					</h:panelGrid>
+				</h:form>
+
+				<h:form>
+					<h:panelGrid id="bottompg" columns="1" >
+						
+						<h:outputText value=""/>
+						<h:commandLink value="Şifremi Unuttum" action="forgotpassword"  style="font-family:arial, verdana;font-size:12px;"/>
+					</h:panelGrid>
+				</h:form>
+
+			</p:panel>
+		</h:panelGrid>
+		</center>
+	</f:view>	
+	</h:body>
+
+
+
+
+
+</html>

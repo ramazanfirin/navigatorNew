@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.Order" table="Orders">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+ 
+	<property name="lat" column="lat" type="string"></property>
+	<property name="lng" column="lng" type="string"></property>
+	<property name="date" column="date" type="timestamp"></property>
+	<property name="address" column="adress" type="string"></property>
+	<property name="ilce" column="ilce" type="string"></property>
+	<property name="mahalle" column="mahalle" type="string"></property>
+	<property name="sokak" column="sokak" type="string"></property>
+	<property name="bina" column="bina" type="string"></property>
+
+	<many-to-one name="user" class="com.nagivator.model.User" column="user" lazy="false" cascade="none" />
+	
+	<many-to-one name="vehicle" class="com.nagivator.model.Vehicle" column="vehicle" lazy="false" cascade="none" />
+	
+	<many-to-one name="status" class="com.nagivator.model.OrderStatus" column="status" lazy="false" cascade="none" />
+
+	<many-to-one name="priority" class="com.nagivator.model.OrderPriority" column="priority" lazy="false" cascade="none" />
+	    
+<!--     <set name="trackItems" table="TrackItem" inverse="true"  fetch="select" lazy="false" cascade="all"> -->
+<!--             <key> -->
+<!--                 <column name="orderId"  /> -->
+<!--             </key> -->
+<!--             <one-to-many class="com.nagivator.model.TrackItem" /> -->
+<!--      </set>  -->
+     
+     <set name="trackItems" cascade="all"  fetch="select" lazy="false">
+         <key column="orderId"/>
+         <one-to-many class="com.nagivator.model.TrackItem"/>
+      </set>
+	<property name="enabled" column="enabled" type="boolean"></property>
+</class>
+</hibernate-mapping>

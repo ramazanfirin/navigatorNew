@@ -1,0 +1,30 @@
+html, body {
+	font-family: Verdana;
+	font-size: 8pt;	
+}
+
+.ERROR {
+	color: red;
+	border-width : 1px;
+	border-color: red;
+	border-style: solid;
+	text-align:center;
+	margin: 2px;
+}
+
+.SUCCESS {
+	color: green;
+	border-width : 1px;
+	border-color: green;
+	border-style: solid;
+	text-align:center;
+	margin: 2px;
+}
+
+
+.rich-message-label {
+	color: red;
+}
+
+    
+}

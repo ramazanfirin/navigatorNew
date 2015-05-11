@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.cbs.Mahalle" table="mahalle">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+ 
+	<property name="name" column="name" type="string"></property>
+	<property name="stringQuery" column="stringQuery" type="string"></property>
+	
+	<many-to-one name="ilce" class="com.nagivator.model.cbs.Ilce" column="ilce" lazy="false" cascade="none" />
+	
+	<set name="sokakList" cascade="all"  fetch="select" lazy="false">
+         <key column="mahalle"/>
+         <one-to-many class="com.nagivator.model.cbs.Sokak"/>
+    </set>
+	<property name="complated" column="enabled" type="boolean"></property>
+</class>
+</hibernate-mapping>

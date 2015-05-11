@@ -1,0 +1,191 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Kullanıcıları Yönet" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<!-- <p:messages id="messages" showDetail="true" autoUpdate="true"/>  -->
+<br></br>
+
+  
+    <h:panelGrid columns="2" >  
+	    <h:outputLabel value="İsim" ></h:outputLabel>  
+		<h:inputText value="#{userController.userName}"> </h:inputText>
+		
+		    
+	    <p:commandButton value="Ara"  id="buttonStart"   update=":form2:dataGrid" actionListener="#{userController.search}"  />
+	    <p:commandButton   oncomplete="PF('createUser').show()" rendered="#{userController.isAdmin}" update=":form4:displayCreate,:form4:createUserId" action="#{userController.resetUserObject}" value="Yeni Kullanıcı"/>  
+           
+<!--         <p:commandButton   oncomplete="dlg.show()" immediate="true"   value="Yeni Kullanıcı"/>   -->
+              
+            
+	    
+    </h:panelGrid> 
+    
+ 
+</h:form>  
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+
+
+<h:commandLink>
+        <p:graphicImage url="/images/excel.png" />
+        <p:dataExporter type="xls" target="dataGrid" fileName="data" pageOnly="true"/>
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/pdf.png" />
+        <p:dataExporter type="pdf" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/csv.png" />
+        <p:dataExporter type="csv" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/xml.png" />
+        <p:dataExporter type="xml" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+
+    <p:dataTable id="dataGrid" var="userItem" value="#{userController.userList}"
+    paginator="true" paginatorPosition="bottom" rows="30"
+    >
+    	<f:facet name="header">  
+            Kullanıcı Listesi
+        </f:facet>  
+
+        <p:column headerText="Kullanıcı Adı" style="width:24%">
+            <h:outputText value="#{userItem.username}" />
+        </p:column>
+        
+        <p:column headerText="Ad" style="width:24%">
+            <h:outputText value="#{userItem.name}" />
+        </p:column>
+        
+        <p:column headerText="Soyad" style="width:24%">
+            <h:outputText value="#{userItem.surname}" />
+        </p:column>
+        
+        <p:column headerText="Yetki" style="width:24%">
+            <h:outputText value="#{userItem.authority.authority}" />
+        </p:column>
+
+		
+        
+        <p:column headerText="E-mail" style="width:24%">
+            <h:outputText value="#{userItem.email}" />
+        </p:column>
+        
+         <p:column headerText="Telefon" style="width:24%">
+            <h:outputText value="#{userItem.phone}" />
+        </p:column>
+
+
+       <p:column style="width:14%" headerText="Güncelle" rendered="#{userController.isAdmin}">
+                <p:commandButton id="selectButton" update=":form4:displayCreate" immediate="true" oncomplete="PF('createUser').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{userController.newUser}" />
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Sil" rendered="#{userController.isAdmin}">
+                <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{userController.deleteUser}" oncomplete="PF('createUser').hide()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{userController.newUser}" />
+                	<p:confirm header="Uyarı" message="Emin misiniz?" icon="ui-icon-alert" />
+            	</p:commandButton>
+        </p:column>
+    </p:dataTable>
+    
+</h:form>
+</p:panel>
+
+<h:form id="form4">
+ <p:dialog header="Create User" widgetVar="createUser" resizable="true" id="createUserId" >  
+         
+ 
+          <p:messages id="messageCreateUser" showDetail="true" autoUpdate="true"/> 
+          <h:panelGrid columns="4" id="displayCreate" >  
+		    <h:outputLabel value="Kullanıcı adı" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username2" value="#{userController.newUser.username}" required="true" requiredMessage="Kullacını Adı Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username2" style="color:red"/>
+			
+			<h:outputLabel value="İsim" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="name" value="#{userController.newUser.name}"  required="true" requiredMessage="İsim Boş olamaz" label="isim"> </h:inputText>
+			<h:message for=":form4:name"  style="color:red"/>
+			
+			<h:outputLabel value="Soyisim" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="surname" value="#{userController.newUser.surname}" required="true" requiredMessage="Soyisim Boş olamaz"> </h:inputText>
+			<h:message  for="surname" style="color:red"/>
+			
+			<h:outputLabel value="Telefon" for="pwd2"></h:outputLabel>    
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:inputText id="phone" value="#{userController.newUser.phone}"  label="Telefon" required="true" requiredMessage="Telefon Boş olamaz"/> 
+			<h:message  for="phone" style="color:red"/>
+			
+			<h:outputLabel value="Email" for="pwd2"></h:outputLabel>    
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:inputText id="email" value="#{userController.newUser.email}"  label="Email" required="true" requiredMessage="Email Boş olamaz"/>  
+			<h:message  for="email" style="color:red"/>	 	
+			
+			<h:outputLabel value="Yetki" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:selectOneMenu id="suburbs2" value="#{userController.newUser.authority.authority}">
+				<f:selectItems value="#{userController.auth}" />
+			</p:selectOneMenu>  
+			<h:message  for="suburbs2" style="color:red"/>
+			
+			
+	    	
+	    	<h:outputLabel value="Aktif" ></h:outputLabel> 
+	    	<h:outputLabel value=":" ></h:outputLabel>  
+			<p:selectBooleanCheckbox  id="active" value="#{userController.newUser.enabled}" /> 
+			<h:message  for="active" style="color:red"/>
+	    	 </h:panelGrid> 
+	    	<p:commandButton value="Kaydet" update=":form2:dataGrid"  actionListener="#{userController.createUser}" />
+			<p:commandButton value="İptal"  onclick="createUser.hide()" />
+   		 
+   		
+   		
+  
+    </p:dialog>  
+    
+
+
+ 
+
+
+
+
+
+
+
+</h:form>
+                    
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>

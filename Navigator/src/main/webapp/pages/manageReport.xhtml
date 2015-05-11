@@ -1,0 +1,174 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Raporlar" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+<br></br>
+
+  
+    <h:panelGrid columns="2" >  
+	    <h:outputLabel value="İLk Tarih" ></h:outputLabel>  
+		<p:calendar value="#{reportController.startDate}" showOn="button"> </p:calendar>
+		
+		<h:outputLabel value="Son Tarih" ></h:outputLabel>  
+		<p:calendar value="#{reportController.endDate}" showOn="button"> </p:calendar>
+		
+		    
+	    <p:commandButton value="Ara"  id="buttonStart"   update=":form2:dataGrid" actionListener="#{reportController.search}"  />
+	       
+<!--         <p:commandButton   oncomplete="dlg.show()" immediate="true"   value="Yeni Kullanıcı"/>   -->
+              
+            
+	    
+    </h:panelGrid> 
+    
+ 
+</h:form>  
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+   <h:commandLink>
+        <p:graphicImage url="/images/excel.png" />
+        <p:dataExporter type="xls" target="dataGrid" fileName="data" pageOnly="true"/>
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/pdf.png" />
+        <p:dataExporter type="pdf" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/csv.png" />
+        <p:dataExporter type="csv" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/xml.png" />
+        <p:dataExporter type="xml" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+    <p:dataTable id="dataGrid" var="userItem" value="#{reportController.orderList}"
+    paginator="true" paginatorPosition="bottom" rows="30"
+    >
+    	<f:facet name="header">  
+            Hedef Listesi
+        </f:facet>  
+
+        <p:column headerText="Tarih" style="width:24%">
+            <h:outputText value="#{userItem.date}" />
+        </p:column>
+        
+        <p:column headerText="Durum" style="width:24%">
+            <h:outputText value="#{userItem.status.description}" />
+        </p:column>
+        
+         <p:column headerText="Öncelik" style="width:24%">
+            <h:outputText value="#{userItem.priority.description}" />
+        </p:column>
+        
+        <p:column headerText="Enlem" style="width:24%">
+            <h:outputText value="#{userItem.lat}" />
+        </p:column>
+        
+        <p:column headerText="Boylam" style="width:24%">
+            <h:outputText value="#{userItem.lng}" />
+        </p:column>
+        
+         <p:column headerText="Adres" style="width:24%">
+            <h:outputText value="#{userItem.address}" />
+        </p:column>
+        
+         <p:column headerText="İLçe" style="width:24%">
+            <h:outputText value="#{userItem.ilce}" />
+        </p:column>
+        
+        <p:column headerText="Mahalle" style="width:24%">
+            <h:outputText value="#{userItem.mahalle}" />
+        </p:column>
+        
+        <p:column headerText="sokak" style="width:24%">
+            <h:outputText value="#{userItem.sokak}" />
+        </p:column>
+        
+        <p:column headerText="bina" style="width:24%">
+            <h:outputText value="#{userItem.bina}" />
+        </p:column>
+        
+        <p:column headerText="Araç" style="width:24%">
+            <h:outputText value="#{userItem.vehicle.plate}" />
+        </p:column>
+        
+        <p:column headerText="Operator" style="width:24%">
+            <h:outputText value="#{userItem.user.username}" />
+        </p:column>
+        
+        <p:column style="width:14%" headerText="İptal Et">
+                <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{reportController.cancel}"  icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{reportController.order}" />
+                	
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Tekrar Gonder">
+                <p:commandButton id="selectButton5" update=":form2:dataGrid" action="#{reportController.sendAgain}"  icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{reportController.order}" />
+                	
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="İncele" rendered="true">
+                <p:commandButton id="selectButton4" update=":form4:map" action="#{reportController.showDetails}" oncomplete="PF('createUser').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{reportController.order}" />
+              	</p:commandButton>
+        </p:column>
+        
+    </p:dataTable>
+    
+</h:form>
+</p:panel>
+
+         
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+<h:form id="form4">
+ <p:dialog header="Create User" widgetVar="createUser" resizable="true" id="createUserId" >  
+         
+ 
+          <p:gmap id="map"  zoom="13" fitBounds="true" center="38.72956137445706, 35.47995459062804"
+					type="HYBRID" style="width:850px;height:550px;margin-top:-25px"
+					model="#{reportController.emptyModel}"
+					 widgetVar="map" >
+					
+				</p:gmap>
+          
+	    	
+			<p:commandButton value="İptal"  onclick="createUser.hide()" />
+   		 
+   		
+   		
+  
+    </p:dialog>  
+    </h:form>
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>

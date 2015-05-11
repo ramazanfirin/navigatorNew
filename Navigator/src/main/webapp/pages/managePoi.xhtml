@@ -1,0 +1,187 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Önemli Yerler" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+<br></br>
+
+  
+    <h:panelGrid columns="2" >  
+	    <h:outputLabel value="İsim" ></h:outputLabel>  
+		<h:inputText value="#{poiController.name}"> </h:inputText>
+		
+		    
+	    <p:commandButton value="Ara"  id="buttonStart"   update=":form2:dataGrid" actionListener="#{poiController.search}"  />
+	    <p:commandButton   oncomplete="PF('createUser').show()" rendered="#{poiController.isAdmin}" update=":form4:displayCreate,:form4:createUserId" action="#{poiController.reset}" value="Yeni Oluştur"/>  
+           
+<!--         <p:commandButton   oncomplete="dlg.show()" immediate="true"   value="Yeni Kullanıcı"/>   -->
+              
+            
+	    
+    </h:panelGrid> 
+    
+ 
+</h:form>  
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+    
+    <h:commandLink>
+        <p:graphicImage url="/images/excel.png" />
+        <p:dataExporter type="xls" target="dataGrid" fileName="data" pageOnly="true"/>
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/pdf.png" />
+        <p:dataExporter type="pdf" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/csv.png" />
+        <p:dataExporter type="csv" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+ 
+    <h:commandLink>
+        <p:graphicImage url="/images/xml.png" />
+        <p:dataExporter type="xml" target="dataGrid" fileName="data" pageOnly="true" />
+    </h:commandLink>
+    
+    <p:dataTable id="dataGrid" var="userItem" value="#{poiController.poiList}"
+    paginator="true" paginatorPosition="bottom" rows="30"
+    >
+    	<f:facet name="header">  
+            Araç Listesi
+        </f:facet>  
+
+        <p:column headerText="İsim" style="width:24%">
+            <h:outputText value="#{userItem.name}" />
+        </p:column>
+        
+        <p:column headerText="Enlem" style="width:24%">
+            <h:outputText value="#{userItem.lat}" />
+        </p:column>
+        
+        <p:column headerText="Boylam" style="width:24%">
+            <h:outputText value="#{userItem.lng}" />
+        </p:column>
+      	
+      	<p:column headerText="Haritada Göster" style="width:24%">
+           <p:commandButton id="selectButton234" update=":form5:map" action="#{poiController.showPoi}" immediate="true" oncomplete="PF('gmapDialog').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{poiController.poi}" />
+            	</p:commandButton>>
+        </p:column>  
+      
+        <p:column style="width:14%" headerText="Güncelle" rendered="#{poiController.isAdmin}">
+                <p:commandButton id="selectButton24" update=":form4:displayCreate" immediate="true" oncomplete="PF('createUser').show()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{poiController.poi}" />
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Sil" rendered="#{poiController.isAdmin}">
+                <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{poiController.delete}" oncomplete="PF('createUser').hide()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{poiController.poi}" />
+                	<p:confirm header="Uyarı" message="Emin misiniz?" icon="ui-icon-alert" />
+            	</p:commandButton>
+        </p:column>
+    </p:dataTable>
+    
+</h:form>
+</p:panel>
+
+<h:form id="form4">
+ <p:dialog header="Create User" widgetVar="createUser" resizable="true" id="createUserId" >  
+         
+ 
+          <p:messages id="messageCreateUser" showDetail="true" autoUpdate="true"/> 
+          <h:panelGrid columns="4" id="displayCreate" >  
+		    <h:outputLabel value="İsim" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username2" value="#{poiController.poi.name}" required="true" requiredMessage="İsim Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username2" style="color:red"/>
+			
+			<h:outputLabel value="Enlem" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username24" value="#{poiController.poi.lat}" required="true" requiredMessage="Enlem Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username24" style="color:red"/>
+			
+			<h:outputLabel value="Boylam" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username25" value="#{poiController.poi.lng}" required="true" requiredMessage="Boylam Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username25" style="color:red"/>
+			
+						
+				    	
+	    	 </h:panelGrid> 
+	    	 <p:commandButton value="Haritadan seç" update=":form6:map2" immediate="true" oncomplete="PF('gmapDialog2').show()" actionListener="#{poiController.prepareDraggableMarker}" />
+	    	<p:commandButton value="Kaydet" update=":form2:dataGrid"  actionListener="#{poiController.create}" />
+			<p:commandButton value="İptal" immediate="true" ionclick="createUser.hide()" />
+   		 
+   		
+   		
+  
+    </p:dialog>  
+  </h:form>  
+    
+ <h:form id="form5">  
+<p:dialog id="gmapDialog" widgetVar="gmapDialog" width="800" height="500" modal="true">
+    <p:gmap id="map" center="38.72956137445706, 35.47995459062804" zoom="14" fitBounds="true" 
+					type="HYBRID" style="width:800px;height:450px;margin-left:5px"
+					model="#{poiController.emptyModel}"
+					binding="#{poiController.map}"
+					widgetVar="map">
+					
+
+				</p:gmap>
+
+</p:dialog>
+</h:form>
+
+<h:form id="form6">
+<p:dialog id="gmapDialog2" widgetVar="gmapDialog2" width="800" height="500" modal="true">
+    <p:gmap id="map2" center="38.72956137445706, 35.47995459062804" zoom="14" fitBounds="true" 
+					type="HYBRID" style="width:800px;height:400px;margin-left:5px"
+					model="#{poiController.emptyModel}"
+					
+					widgetVar="map2">
+					<p:ajax event="markerDrag" listener="#{poiController.onMarkerDrag}" update=":form4:username24,:form4:username25" />
+
+	</p:gmap>
+	<p:outputLabel value="Ekrandaki işareti sürükleyebilirsiniz"></p:outputLabel><br></br>
+  <p:commandButton value="Kapat" update=":form4:username24,:form4:username25" oncomplete="PF('gmapDialog2').hide()" />
+</p:dialog>
+</h:form>
+
+
+
+
+
+
+
+
+                    
+
+<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>
