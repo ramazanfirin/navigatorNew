@@ -2,20 +2,14 @@ package com.nagivator.model;
 
 
 
-public class Vehicle{
+public class Vehicle extends BasicObject{
 
-	private Long id;
+
 	private String plate;
 	private Device device;
 	private Branch branch = new Branch();
-	private Boolean enabled=true;
+
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getPlate() {
 		return plate;
 	}
@@ -34,12 +28,6 @@ public class Vehicle{
 	public void setBranch(Branch branch) {
 		this.branch = branch;
 	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	
+
 	
 }

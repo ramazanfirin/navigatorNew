@@ -2,22 +2,14 @@ package com.nagivator.model;
 
 import java.util.Date;
 
-public class TrackItem {
+public class TrackItem extends BasicObject{
 
-	private Long id;
+	
 	
 	private String lat;
 	private String lng;
 	private Date date;
-	private Boolean enabled=true;
 	
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getLat() {
 		return lat;
 	}
@@ -36,11 +28,6 @@ public class TrackItem {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+
 	
 }

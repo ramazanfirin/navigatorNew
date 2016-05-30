@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nagivator.model.Branch;
 import com.nagivator.model.Device;
+import com.nagivator.model.ForgetPasswordModel;
 import com.nagivator.model.Order;
 import com.nagivator.model.Poi;
 import com.nagivator.model.TrackItem;
@@ -164,6 +165,17 @@ public class PersistanceServiceImpl implements PersistanceService {
 	public void saveOrUpdateAll(List list) throws Exception {
 		// TODO Auto-generated method stub
 		persistanceDao.saveOrUpdateAll(list);
+	}
+
+	@Override
+	public User getUserByMail(String mail) throws Exception {
+		return persistanceDao.getUserByMail(mail);
+	}
+
+	@Override
+	public void saveOrUpdate(ForgetPasswordModel user) throws Exception {
+		persistanceDao.saveOrUpdate(user);
+		
 	}
 
 

@@ -12,18 +12,17 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.nagivator.model.Company;
 import com.nagivator.model.User;
 import com.navigator.service.PersistanceService;
-import com.navigator.util.Util;
 
 
 @Component
@@ -46,7 +45,73 @@ public class LoginController extends BaseController{
 	String password;
     String email;
 	
+	User currentUser;
 	
+	String oldPassword;
+	String newPassword;
+	String newPasswordAgain;
+	
+	public void changePassword() throws Exception{
+		try {
+			if(!newPassword.equals(newPasswordAgain)){
+				FacesMessage facesMsg = new FacesMessage(
+			            FacesMessage.SEVERITY_ERROR, "Error", "Sifreler ayni değil") ;
+			        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+			        return;
+			}
+			
+			Authentication request = new UsernamePasswordAuthenticationToken(username, oldPassword);            
+			Authentication result = authenticationManager.authenticate(request);
+			
+			currentUser.setPassword(newPassword);
+			updateUser();
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			LOGGER.error("Login failed:"+ e.getMessage()  , e);
+	        FacesMessage facesMsg = new FacesMessage(
+	            FacesMessage.SEVERITY_ERROR, "Error", "login.failed") ;
+	        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+		}
+	}
+    
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	public String getNewPasswordAgain() {
+		return newPasswordAgain;
+	}
+
+	public void setNewPasswordAgain(String newPasswordAgain) {
+		this.newPasswordAgain = newPasswordAgain;
+	}
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(User currentUser) {
+		this.currentUser = currentUser;
+	}
+	
+	public void updateUser() throws Exception{
+		getServiceProvider().getPersistanceService().saveOrUpdate(currentUser);
+		FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_INFO,"Isleminiz tamamlamnd,",""));
+	}
+
 	public String login() {
 		try{
 			
@@ -77,10 +142,13 @@ public class LoginController extends BaseController{
 			HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
 			session.setAttribute("username", username);;
 			
-			
+			currentUser = getServiceProvider().getPersistanceService().getUser(username);
 			
 			session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 			//session.setAttribute("yetki", securityContext.getAuthentication().getAuthorities());securityContext.getAuthentication().getAuthorities().contains(Util.ROLE_ADMIN);
+			
+			Company company = service.getUser(username).getCompany();
+			session.setAttribute("company", company);;
 			LOGGER.info("Login sucessfull:"+username);
 	 
 	    } catch (Exception e) {
@@ -114,13 +182,13 @@ public class LoginController extends BaseController{
 	public void forgotPassword() throws Exception{
 		User user=getServiceProvider().getPersistanceService().getUser(email);
 		if(user == null){
-	        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Mail adresi bulunamadı") ;
+	        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Mail adresi bulunamadÄ±") ;
 		        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		}else{
 			
-			String subject = "Şifre Hatırlatma";
+			String subject = "Åžifre HatÄ±rlatma";
 			String messageContent = "Merhaba "+user.getName();
-			messageContent += "<br/>Şifreniz :"+user.getPassword();
+			messageContent += "<br/>Åžifreniz :"+user.getPassword();
 			
 			List<String> toList = new ArrayList<String>();
 			toList.add(user.getEmail());
@@ -128,7 +196,7 @@ public class LoginController extends BaseController{
 			//getServiceProvider().getAlertService().sendMail(toList, subject, messageContent);
 			
 			
-			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "İnfo", "Mail adresinize şifreniz gönderilmiştir.") ;
+			FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Ä°nfo", "Mail adresinize ÅŸifreniz gÃ¶nderilmiÅŸtir.") ;
 			FacesContext.getCurrentInstance().addMessage(null, facesMsg);
 		}
 	}

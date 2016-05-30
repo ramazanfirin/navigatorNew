@@ -87,7 +87,7 @@ public class VehicleController extends BaseController{
 	public void search(){
 		try{
 			vehicleList = getServiceProvider().getPersistanceService().searchVehicle(plate);
-			System.out.println(vehicleList.get(0).getBranch().getName());
+			//System.out.println(vehicleList.get(0).getBranch().getName());
 		}catch(Exception e){
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.nagivator.model.Branch;
 import com.nagivator.model.Device;
+import com.nagivator.model.ForgetPasswordModel;
 import com.nagivator.model.Order;
 import com.nagivator.model.Poi;
 import com.nagivator.model.TrackItem;
@@ -18,6 +19,7 @@ import com.nagivator.model.cbs.Sokak;
 public interface PersistanceService {
 	
 	public User getUser(String username) throws Exception;
+	public User getUserByMail(String mail) throws Exception;
 	public  void saveOrUpdate(Object user) throws Exception;
 	public  void saveOrUpdateAll(List list) throws Exception;
 //	public  void delete(Object user) throws Exception;
@@ -56,4 +58,6 @@ public interface PersistanceService {
 	public List<Mahalle> getMahalleList(boolean all) throws Exception ;
 	public List<Sokak> getSokakList(boolean all) throws Exception ;
 	public List<Bina> getBinaList(boolean all) throws Exception ;
+	
+	public  void saveOrUpdate(ForgetPasswordModel user) throws Exception;
 }

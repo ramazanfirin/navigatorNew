@@ -1,19 +1,12 @@
 package com.nagivator.model;
 
-public class Device {
-	private Long id;
+public class Device extends BasicObject{
+
 	private String msisdn;
 	private String imei;
 //	private Vehicle vehicle = new Vehicle();
 	private String regId;
-	private Boolean enabled=true;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getMsisdn() {
 		return msisdn;
 	}
@@ -38,14 +31,6 @@ public class Device {
 	public void setRegId(String regId) {
 		this.regId = regId;
 	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	
-	
 	
 	
 }

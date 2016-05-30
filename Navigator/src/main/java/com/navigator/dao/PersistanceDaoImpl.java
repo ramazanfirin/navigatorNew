@@ -4,17 +4,22 @@ package com.navigator.dao;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.nagivator.model.BasicObject;
 import com.nagivator.model.Branch;
+import com.nagivator.model.Company;
 import com.nagivator.model.Device;
+import com.nagivator.model.ForgetPasswordModel;
 import com.nagivator.model.Order;
 import com.nagivator.model.Poi;
 import com.nagivator.model.TrackItem;
@@ -40,7 +45,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 		public User getUser(String username) throws Exception {
 			List result = getHibernateTemplate().find("from User as c where c.username ='"+ username+"'");
-			if(result.size()>0)
+			if(result.size()>0) 
 				return (User)result.get(0);
 			else
 				return null;
@@ -48,6 +53,8 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public void saveOrUpdate(Object user) throws Exception {
+			BasicObject o = (BasicObject)user;
+			o.setCompany(getCompany());
 			hibernateTemplate.saveOrUpdate(user);
 			
 		}
@@ -94,7 +101,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		}
 		
 		public List<User> searchUser(String username) throws Exception {
-			String query = 	"from User as c where 1=1 and c.enabled=true";
+			String query = 	"from User as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";
 			if(username!=null && !username.equals(""))
 				query = query + "and c.username like '"+username+"%'";
 				
@@ -103,7 +110,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Device> searchDevice(String msisdn) throws Exception {
-			String query = 	"from Device as c where 1=1 and c.enabled=true";
+			String query = 	"from Device as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";
 			if(msisdn!=null && !msisdn.equals(""))
 				query = query + "and c.msisdn like '"+msisdn+"%'";
 				
@@ -112,7 +119,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 		@Transactional
 		public List<Vehicle> getVechiles() throws Exception {
-			String query = 	"from Vehicle as c where 1=1 and c.enabled=true";				
+			String query = 	"from Vehicle as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";				
 			return getHibernateTemplate().find(query);
 		}
 
@@ -129,13 +136,13 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Device> getDevices() throws Exception {
-			String query = 	"from Device as c where 1=1 and c.enabled=true";	
+			String query = 	"from Device as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";	
 			return getHibernateTemplate().find(query);
 		}
 
 
 		public List<Vehicle> searchVehicle(String plate) throws Exception {
-			String query = 	"from Vehicle as c where 1=1 and c.enabled=true";
+			String query = 	"from Vehicle as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";
 			if(plate!=null && !plate.equals(""))
 				query = query + "and c.plate like '"+plate+"%'";
 				
@@ -144,7 +151,10 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Branch> searchBranch(String name) throws Exception {
-			String query = 	"from Branch as c where 1=1 and c.enabled=true";
+			
+			
+			
+			String query = 	"from Branch as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";
 			if(name!=null && !name.equals(""))
 				query = query + "and c.name like '"+name+"%'";
 			return getHibernateTemplate().find(query);
@@ -152,13 +162,13 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Branch> getBranchList() throws Exception {
-			String query = 	"from Branch as c where 1=1 and c.enabled=true";	
+			String query = 	"from Branch as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true";	
 			return getHibernateTemplate().find(query);
 		}
 
 
 		public List<Order> searchOrder(Date start, Date End) throws Exception {
-			String query = 	"from Order as c where 1=1 and c.enabled=true";
+			String query = 	"from Order as c where 1=1 and  c.company.id="+ getCompanyId()+"and  c.enabled=true";
 			if(start!=null)
 				query = query + "and c.date > "+start.getTime();
 			if(End!=null)
@@ -169,13 +179,13 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 		public List<Order> getOpenOrders(String imei) throws Exception {
 			//String query = 	"from Order as c where 1=1 and c.vehicle.device.imei='"+imei+"' and c.status.id in(1,2,4)";
-			String query = 	"from Order as c where 1=1  and c.status.id in(1,2,4)";
+			String query = 	"from Order as c where 1=1 and c.company.id="+ getCompanyId()+"  and c.status.id in(1,2,4)";
 			return getHibernateTemplate().find(query);
 		}
 
 
 		public Device getDeviceByImei(String imei) throws Exception {
-			List result = getHibernateTemplate().find("from Device as c where  c.enabled=true and c.imei ='"+ imei+"'");
+			List result = getHibernateTemplate().find("from Device as c where  c.company.id="+ getCompanyId()+" and c.enabled=true and c.imei ='"+ imei+"'");
 			if(result.size()>0)
 				return (Device)result.get(0);
 			else
@@ -184,7 +194,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Poi> searchPoi(String name) throws Exception {
-			String query = 	"from Poi as c where 1=1 and c.enabled=true ";
+			String query = 	"from Poi as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true ";
 			if(name!=null && !name.equals(""))
 				query = query + "and c.name like '%"+name+"%'";
 			return getHibernateTemplate().find(query);
@@ -192,7 +202,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 
 		public List<Poi> getPoiList() throws Exception {
-			String query = 	"from Poi as c where 1=1 and c.enabled=true ";	
+			String query = 	"from Poi as c where 1=1 and c.company.id="+ getCompanyId()+" and c.enabled=true ";	
 			return getHibernateTemplate().find(query);
 		}
 
@@ -245,8 +255,39 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 			
 		}
 
+        public Company getCompany(){
+        	ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+			HttpSession session = requestAttributes.getRequest().getSession();
+			
+			Company company = (Company)session.getAttribute("company");
+			return company;
+        }
 
-		
+        public Long getCompanyId(){
+        	ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+			HttpSession session = requestAttributes.getRequest().getSession();
+			
+			Company company = (Company)session.getAttribute("company");
+			return company.getId();
+        }
+
+
+		@Override
+		public User getUserByMail(String mail) throws Exception {
+			List result = getHibernateTemplate().find("from User as c where c.email ='"+ mail+"'");
+			if(result.size()>0) 
+				return (User)result.get(0);
+			else
+				return null;
+		}
+
+
+		@Override
+		public void saveOrUpdate(ForgetPasswordModel user) throws Exception {
+			getHibernateTemplate().saveOrUpdate(user);
+			
+		}
+        
 
 
 		//		public HibernateTemplate getHibernateTemplate() {

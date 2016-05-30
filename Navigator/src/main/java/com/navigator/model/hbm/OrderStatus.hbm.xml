@@ -6,7 +6,7 @@
 	<id name="id" column="id" type="long">
 		<generator class="native"></generator>
 	</id>
-	<property name="description" column="description" type="string"></property>
+	<property name="name" column="name" type="string"></property>
 <property name="enabled" column="enabled" type="boolean"></property>
 </class>
 </hibernate-mapping>

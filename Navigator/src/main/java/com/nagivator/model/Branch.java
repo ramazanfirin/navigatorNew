@@ -5,27 +5,15 @@ import java.util.Set;
 
 
 
-public class Branch{
+public class Branch extends BasicObject{
 
-	private Long id;
-	private String name;
-	private Long lat;
+		private Long lat;
 	private Long lng;
 	private Set<Vehicle> vehicleList;
-	private Boolean enabled=true;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
+
+	
 	public Long getLat() {
 		return lat;
 	}
@@ -44,14 +32,6 @@ public class Branch{
 	public void setVehicleList(Set<Vehicle> vehicleList) {
 		this.vehicleList = vehicleList;
 	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	
-	
 	
 	
 }

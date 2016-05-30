@@ -9,11 +9,14 @@
 	
 	<property name="plate" column="plate" type="string"></property>
 
+
 	<many-to-one name="device" class="com.nagivator.model.Device" column="device" lazy="false" cascade="none" />
 	
 	<many-to-one name="branch" class="com.nagivator.model.Branch" lazy="false" fetch="select">
             <column name="branchId" not-null="true" />
      </many-to-one>
 	<property name="enabled" column="enabled" type="boolean"></property>
+	<property name="name" column="name" type="string"></property>
+	<many-to-one name="company" class="com.nagivator.model.Company" column="companyId" lazy="false" cascade="none" />
 </class>
 </hibernate-mapping>

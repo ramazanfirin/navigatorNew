@@ -2,9 +2,9 @@ package com.nagivator.model;
 
 
 
-public class User{
+public class User extends BasicObject{
 
-	private Long id;
+	
 	
 	private String username="";
 	private String password="";
@@ -13,7 +13,7 @@ public class User{
 	
 	private String passwordTemp;
 	
-	private String name;
+	
 	private String surname;
 	private String email;
 	private String phone;
@@ -21,13 +21,18 @@ public class User{
 	Boolean sendAlertMail=true;
 	Boolean sendAlertSms=true;
 	
+	
+	
+	
+	
+
 	public void reset(){
 		username = "";
 		password = "";
-		id = null;
+		setId(null);
 		enabled = true;
 		authority = new Authority();
-		name = "";
+		setName("");
 		surname = "";
 		email ="";
 		phone="";	
@@ -53,12 +58,7 @@ public class User{
 	public void setAuthority(Authority authority) {
 		this.authority = authority;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -70,14 +70,6 @@ public class User{
 	}
 	public void setPasswordTemp(String passwordTemp) {
 		this.passwordTemp = passwordTemp;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getSurname() {

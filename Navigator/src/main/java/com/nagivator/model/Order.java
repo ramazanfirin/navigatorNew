@@ -8,10 +8,8 @@ import java.util.Set;
 
 
 
-public class Order{
+public class Order extends BasicObject{
 
-	private Long id;
-	
 	private User user;
 	private Vehicle vehicle;
 	private String lat;
@@ -28,14 +26,6 @@ public class Order{
 	private OrderStatus status = new OrderStatus();
 	private OrderPriority priority = new OrderPriority();
 	
-	private Boolean enabled=true;
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public User getUser() {
 		return user;
 	}
@@ -115,12 +105,7 @@ public class Order{
 	public void setPriority(OrderPriority priority) {
 		this.priority = priority;
 	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+	
 	
 	
 }

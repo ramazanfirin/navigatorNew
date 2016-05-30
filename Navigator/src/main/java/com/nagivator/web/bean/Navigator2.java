@@ -219,13 +219,14 @@ public class Navigator2 extends BaseController implements Serializable {
 	}
 	
 	public List<NameValuePair> getPointOfInformation() throws Exception{
-		String[] projections = OnlineCoordinateConverter.convertToBelediyeCoordinate(lng,lat).split(" ");
-		
-	    Float lngFloat= Float.parseFloat(projections[0]);
-		Float latFloat= Float.parseFloat(projections[1]);
-		lngFloat = lngFloat+Float.parseFloat("31.2");
-		latFloat = latFloat+Float.parseFloat("102.5"); 
-		List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lngFloat), String.valueOf(latFloat));
+//		String[] projections = OnlineCoordinateConverter.convertToBelediyeCoordinate(lng,lat).split(" ");
+//		
+//	    Float lngFloat= Float.parseFloat(projections[0]);
+//		Float latFloat= Float.parseFloat(projections[1]);
+//		lngFloat = lngFloat+Float.parseFloat("31.2");
+//		latFloat = latFloat+Float.parseFloat("102.5"); 
+		//List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lngFloat), String.valueOf(latFloat));
+		List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lng), String.valueOf(lat));
 		values.add(new NameValuePair("Enlem", String.valueOf(lat)));
 		values.add(new NameValuePair("Boylam", String.valueOf(lng)));
 		return values;
@@ -238,11 +239,15 @@ public class Navigator2 extends BaseController implements Serializable {
 			//FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "koordinar tespit edildi",""));
 			String lat=list.get(0);
 			String lng=list.get(1);
+			/*
 			String[]  coordinates = OnlineCoordinateConverter.convertCoordinate( lat,lng).split(" ");
 		    Float lngFloat= Float.parseFloat(coordinates[0]);
 			Float latFloat= Float.parseFloat(coordinates[1]);
 			lngFloat = lngFloat-Float.parseFloat("0.000230");
 			latFloat = latFloat-Float.parseFloat("0.000922");
+			*/
+			Float lngFloat= Float.parseFloat(lat);
+			Float latFloat= Float.parseFloat(lng);
 			
 			List<NameValuePair> data = Util.getMarkerInformation(String.valueOf(latFloat), String.valueOf(lngFloat), Util.findValueOfSelectItem(ilceList,ilce), Util.findValueOfSelectItem(mahalleList,mahalle), Util.findValueOfSelectItem(sokakList,sokak), Util.findValueOfSelectItem(binaList,bina));
 			addMarkerToMap(Double.valueOf(String.valueOf(latFloat)).doubleValue(),Double.valueOf(String.valueOf(lngFloat)).doubleValue(),data,"");

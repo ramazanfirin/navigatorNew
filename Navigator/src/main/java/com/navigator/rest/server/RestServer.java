@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nagivator.model.Device;
+import com.nagivator.model.KeyValueDTO;
 import com.nagivator.model.Order;
 import com.navigator.service.PersistanceService;
 import com.navigator.service.ServiceProvider;
+import com.navigator.util.CityCurfTest;
 
 
 
@@ -133,5 +136,80 @@ public class RestServer {
        
        return "OK";
    	}
+   //cbs data
+    
+    
+    @GET
+	@Path("/getIlceList")
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<KeyValueDTO> getIlceList() throws Exception{
+    	List<KeyValueDTO> result = new ArrayList<KeyValueDTO>();
+    	
+    	List<SelectItem> ilceList = CityCurfTest.getIlceList();
+    	for (Iterator iterator = ilceList.iterator(); iterator.hasNext();) {
+			SelectItem selectItem = (SelectItem) iterator.next();
+			result.add(new KeyValueDTO(selectItem.getLabel(),selectItem.getValue().toString()));
+		}
+	
+    	return result;
+    }
+    
+    @GET
+	@Path("/getMahalleList/{param1}/")
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<KeyValueDTO> getMahalleist(@PathParam("param1") String ilceName) throws Exception{
+    	List<KeyValueDTO> result = new ArrayList<KeyValueDTO>();
+    	
+    	List<SelectItem> list = CityCurfTest.getMahalleList(ilceName);
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			SelectItem selectItem = (SelectItem) iterator.next();
+			result.add(new KeyValueDTO(selectItem.getLabel(),selectItem.getValue().toString()));
+		}
+	
+    	return result;
+    }
    
+    @GET
+	@Path("/getSokakList/{param1}/")
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<KeyValueDTO> getLSokakList(@PathParam("param1") String name) throws Exception{
+    	List<KeyValueDTO> result = new ArrayList<KeyValueDTO>();
+    	
+    	List<SelectItem> list = CityCurfTest.getSokakList(name);
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			SelectItem selectItem = (SelectItem) iterator.next();
+			result.add(new KeyValueDTO(selectItem.getLabel(),selectItem.getValue().toString()));
+		}
+	
+    	return result;
+    }
+    
+    @GET
+	@Path("/getBinaList/{param1}/")
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<KeyValueDTO> getBinaList(@PathParam("param1") String name) throws Exception{
+    	List<KeyValueDTO> result = new ArrayList<KeyValueDTO>();
+    	
+    	List<SelectItem> list = CityCurfTest.getBinaList(name);
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			SelectItem selectItem = (SelectItem) iterator.next();
+			result.add(new KeyValueDTO(selectItem.getLabel(),selectItem.getValue().toString()));
+		}
+	
+    	return result;
+    }
+    
+    @GET
+	@Path("/getCoordinate/{param1}/")
+    @Produces(MediaType.APPLICATION_JSON)
+	public List<KeyValueDTO> getCoordinate(@PathParam("param1") String binaNo) throws Exception{
+    	List<KeyValueDTO> result = new ArrayList<KeyValueDTO>();
+    	
+    	List<String> list = CityCurfTest.getKapiNo(binaNo);
+    	result.add(new KeyValueDTO("lat",list.get(0)));
+    	result.add(new KeyValueDTO("lng",list.get(1)));
+    	
+	
+    	return result;
+    }
 } 

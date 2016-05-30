@@ -40,7 +40,7 @@
 		<property name="mappingLocations">
 			<list>
 				<value>
-					classpath*:com/navigator/model/hbm/**/*.hbm.xml
+					classpath:com/navigator/model/hbm/*.hbm.xml
 				</value>
 			</list>
 		</property>

@@ -109,7 +109,7 @@
 						
 			<h:outputLabel value="Cihaz" ></h:outputLabel>  
 			<h:outputLabel value=":" ></h:outputLabel> 
-			<p:selectOneMenu id="suburbs2" value="#{vehicleController.vehicle.device.id}">
+			<p:selectOneMenu id="suburbs2" value="#{vehicleController.vehicle.device.id}" required="true" requiredMessage="Cihaz Boş Olamaz">
 				<f:selectItems value="#{vehicleController.deviceOptions}" />
 			</p:selectOneMenu>  
 			<h:message  for="suburbs2" style="color:red"/>
@@ -117,7 +117,7 @@
 			
 			<h:outputLabel value="Şube" ></h:outputLabel>  
 			<h:outputLabel value=":" ></h:outputLabel> 
-			<p:selectOneMenu id="suburbs3" value="#{vehicleController.vehicle.branch.id}">
+			<p:selectOneMenu id="suburbs3" value="#{vehicleController.vehicle.branch.id}" required="true" requiredMessage="Şube Boş Olamaz">
 				<f:selectItems value="#{vehicleController.branchOptions}" />
 			</p:selectOneMenu>  
 			<h:message  for="suburbs3" style="color:red"/>

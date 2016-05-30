@@ -7,6 +7,7 @@
 		<generator class="native"></generator>
 	</id>
 	
+	<property name="name" column="name" type="string"></property>
 	<property name="msisdn" column="msisdn" type="string"></property>
 	<property name="imei" column="imei" type="string"></property>
 
@@ -14,5 +15,7 @@
 
 	<property name="regId" column="RegId" type="string"></property>
 	<property name="enabled" column="enabled" type="boolean"></property>
+	<many-to-one name="company" class="com.nagivator.model.Company" column="companyId" lazy="false" cascade="none" />
+	
 </class>
 </hibernate-mapping>

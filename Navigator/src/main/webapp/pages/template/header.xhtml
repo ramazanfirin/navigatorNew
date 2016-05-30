@@ -54,12 +54,10 @@
 	</div>
 <h:form>
 <p:tabMenu >
-    <p:menuitem value="Adres Gönder(Test)"  url="/pages/Nagivation.xhtml"  icon="ui-icon-star">
+    <p:menuitem value="Adres Gönder"  url="/pages/Nagivation.xhtml"  icon="ui-icon-star">
         <f:param name="i" value="0" />
     </p:menuitem>
-    <p:menuitem value="Adres Gönder"  url="/pages/Nagivation2.xhtml"  icon="ui-icon-star">
-        <f:param name="i" value="0" />
-    </p:menuitem>
+
     <p:menuitem value="Kullanıcı Yönetimi" url="/pages/manageUsers.xhtml" icon="ui-icon-search">
         <f:param name="i" value="1" />
     </p:menuitem>
@@ -77,6 +75,9 @@
     </p:menuitem>
     <p:menuitem value="Raporlar" url="/pages/manageReport.xhtml" icon="ui-icon-person">
         <f:param name="i" value="4" />
+    </p:menuitem>
+    <p:menuitem value="Profile" url="/pages/manageProfile.xhtml" actionListener="#{profileController.loadCurrentUser}" icon="ui-icon-person">
+        <f:param name="i" value="41" />
     </p:menuitem>
     <p:menuitem value="Çıkış" action="#{loginController.logout}" icon="ui-icon-person">
         <f:param name="i" value="4" />

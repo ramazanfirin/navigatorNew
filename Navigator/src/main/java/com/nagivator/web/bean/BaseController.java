@@ -15,11 +15,10 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.nagivator.model.Company;
 import com.nagivator.model.User;
-import com.nagivator.*;
 import com.navigator.service.ServiceProvider;
 import com.navigator.util.Util;
 
@@ -50,7 +49,7 @@ public class BaseController {
 			
 			auth.put(Util.ROLE_ADMIN, Util.ROLE_ADMIN);
 			auth.put(Util.ROLE_USER, Util.ROLE_USER);
-			loadCurrentUser();
+			//loadCurrentUser();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,6 +127,16 @@ public class BaseController {
 		this.isAdmin = isAdmin;
 	}
 
+	public Long getCompanyId(){
+		return getCompany().getId();
+	}
+	
+	public Company getCompany(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+		Company company = (Company) session.getAttribute("company");
+		return company;
+	}
 	
 	
 

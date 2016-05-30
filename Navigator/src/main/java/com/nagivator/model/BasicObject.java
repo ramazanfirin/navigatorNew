@@ -11,20 +11,28 @@ import java.util.Set;
 public class BasicObject{
 
 	private Long id;
-	private String description;
+	private String name;
 	private Boolean enabled=true;
+	private Company company;
 	
+	public Company getCompany() {
+		return company;
+	}
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getDescription() {
-		return description;
+	
+	public String getName() {
+		return name;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public Boolean getEnabled() {
 		return enabled;

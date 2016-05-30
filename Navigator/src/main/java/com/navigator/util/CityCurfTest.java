@@ -31,6 +31,7 @@ public class CityCurfTest {
 	
 	public static List<SelectItem> getIlceList() throws Exception{
 		String url = "http://cbs.kayseri.bel.tr/KIlce.aspx";
+		url ="http://cbs.kayseri.bel.tr/GenelSayfalar/AdresBilesenleri/KIlce.aspx";
 		List  <SelectItem> selectItemList = new ArrayList<SelectItem>();
 		try {
 			String result= Util.getUrl(url);
@@ -68,6 +69,7 @@ public class CityCurfTest {
 	public static List <SelectItem>  getMahalleList(String url1) throws Exception{
 		String urlEncoded = URLEncoder.encode(url1, "UTF-8");
 		String url = "http://cbs.kayseri.bel.tr/KMahalle.aspx?"+url1;
+		url="http://cbs.kayseri.bel.tr/GenelSayfalar/AdresBilesenleri/KMahalle.aspx?"+url1;
 		List  <SelectItem> selectItemList = new ArrayList<SelectItem>();
 		try {
 			String result= Util.getUrl(url);
@@ -106,6 +108,7 @@ public class CityCurfTest {
 		List  <SelectItem> selectItemList = new ArrayList<SelectItem>();
 		String urlEncoded = URLEncoder.encode(url1, "UTF-8");
 		String url = "http://cbs.kayseri.bel.tr/Kcsbm.aspx?"+url1;
+		url="http://cbs.kayseri.bel.tr/GenelSayfalar/AdresBilesenleri/Kcsbm.aspx?"+url1;
 		try {
 			String result= Util.getUrl(url);
 			
@@ -141,6 +144,7 @@ public class CityCurfTest {
 	public static List <SelectItem> getBinaList(String url1) throws Exception{
 		String urlEncoded = URLEncoder.encode(url1, "UTF-8");
 		String url = "http://cbs.kayseri.bel.tr/KBina.aspx?"+url1;
+		url="http://cbs.kayseri.bel.tr/GenelSayfalar/AdresBilesenleri/KBina.aspx?"+url1;
 		List  <SelectItem> selectItemList = new ArrayList<SelectItem>();
 		try {
 			String result= Util.getUrl(url);
@@ -191,10 +195,11 @@ public class CityCurfTest {
 		return selectItemList;
 	}
 	
-	public static void getKapiNo() throws Exception{
+	public static List<String> getKapiNo(String kapiNo) throws Exception{
 		
-		List<String> a =CityCurfUtil.getKapiNo("225960");
+		List<String> a =CityCurfUtil.getKapiNo(kapiNo);
 		System.out.println("bitti");
+		return a;
 	}
 	
 	public static final String escapeHTML(String s){

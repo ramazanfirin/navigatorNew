@@ -49,7 +49,7 @@ public class BranchController extends BaseController{
 	
 	public void create(){
 		try{
-					
+			//branch.setCompany(getCompany());		
 			getServiceProvider().getPersistanceService().saveOrUpdate(branch);
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_INFO,"Isleminiz tamamlamnd,",""));
 			reset();	
@@ -84,7 +84,7 @@ public class BranchController extends BaseController{
 	public void search(){
 		try{
 			branchList = getServiceProvider().getPersistanceService().searchBranch(name);
-			branchList.get(0).getVehicleList().isEmpty();
+			//branchList.get(0).getVehicleList().isEmpty();
 		}catch(Exception e){
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);

@@ -12,6 +12,6 @@
 	<property name="lng" column="lng" type="string"></property>
 
 	<property name="enabled" column="enabled" type="boolean"></property>
-	
+	<many-to-one name="company" class="com.nagivator.model.Company" column="companyId" lazy="false" cascade="none" />
 </class>
 </hibernate-mapping>

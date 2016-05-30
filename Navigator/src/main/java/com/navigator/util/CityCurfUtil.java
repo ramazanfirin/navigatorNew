@@ -23,12 +23,70 @@ public class CityCurfUtil {
 
 	public static  List<NameValuePair> getInformaitonOfCoordinates(String x,String y) throws Exception{
 		List<NameValuePair> list = new ArrayList<NameValuePair>();
-		String url = "http://cbs.kayseri.bel.tr/Rehber.aspx/JSHaritadanBilgi";
+		String url = "http://cbs.kayseri.bel.tr/Rehber.aspx/JSHaritadanBilgiAl";
 		
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(url);
 		
 		StringEntity input = new StringEntity("{\"x\":"+x+",\"y\":"+y+"}");
+		input.setContentType("application/json");
+		post.setEntity(input);
+ 
+		post.setHeader("Accept", "*/*");
+		post.setHeader("Accept-Encoding", "gzip,deflate");
+		post.setHeader("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4");
+		post.setHeader("Connection", "keep-alive");
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		post.setHeader("Host", "cbs.kayseri.bel.tr");
+		post.setHeader("X-Requested-With", "XMLHttpRequest");
+		post.setHeader("Referer", "http://cbs.kayseri.bel.tr/Rehber.aspx");
+		HttpResponse response = client.execute(post);
+		
+		BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		
+		System.out.println("result for "+x +" and "+y+"="+result.toString()) ;
+		
+		String returnValue = result.toString(); 
+		returnValue = returnValue.replace("{\"d\":\"", "");
+		returnValue = returnValue.replace("\"}", "");
+		returnValue = returnValue.replace("||", "&");
+		returnValue = returnValue.replace("|", "@");
+		String[] values= returnValue.split("&");
+
+		String finalReturn="<div id=\"content\"><div id=\"siteNotice\"></div><h1 id=\"firstHeading\" class=\"firstHeading\">Aciklama</h1><div id=\"bodyContent\">";
+		;
+	
+		for (int i = 0; i < values.length; i++) {
+			String[] temp  =values[i].split("@");
+			if(!temp[0].equals("--") && temp.length>1){
+				//System.out.println(temp[0]+"->"+temp[1]);
+//				String value1=new String(temp[0].getBytes("ISO-8859-9"),"UTF-8");
+//				String value2=new String(temp[1].getBytes("ISO-8859-9"),"UTF-8");
+//				finalReturn = finalReturn+""+value1+":"+value2+"<br/>";
+				list.add(new NameValuePair(new String(temp[0].getBytes("ISO-8859-9"),"UTF-8"), new String(temp[1].getBytes("ISO-8859-9"),"UTF-8")));
+			}else
+				break;
+		}
+		finalReturn = finalReturn +"</div></div>";
+		return list;
+	}
+	
+	
+	public static  List<NameValuePair> getInformaitonOfCoordinates2(String x,String y) throws Exception{
+		List<NameValuePair> list = new ArrayList<NameValuePair>();
+		String url = "http://cbs.kayseri.bel.tr/Rehber.aspx/JSHaritadanBilgiAl";
+		
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
+		
+		StringEntity input = new StringEntity("{\"islem\":"+2+",\"kordinatlar\":\""+x+"|"+y+"\"}");
 		input.setContentType("application/json");
 		post.setEntity(input);
  
@@ -160,7 +218,7 @@ public class CityCurfUtil {
 		}
 		
 		String returnValue="";
-		returnValue = result.toString().replace("{\"d\":{\"__type\":\"Rehber+sobje\",\"deger\":\"", "");
+		returnValue = result.toString().replace("{\"d\":{\"__type\":\"HaritaCografiArama+sobje\",\"deger\":\"", "");
 		returnValue = returnValue.replace("\"}}", "");
 		returnValue = returnValue.replace("||", "&");
 		returnValue = returnValue.replace("|", "@");
@@ -207,7 +265,7 @@ public class CityCurfUtil {
 		//List<String> a =getKapiNo("225962");
 		//System.out.println("ddd");
 		
-		List<NameValuePair> list = getInformaitonOfCoordinates("454718.00554117875", "4288725.9227159275");
+		List<NameValuePair> list = getInformaitonOfCoordinates2("35.5063445890609", "38.7264522982779");
 		System.out.println("ddd");
 	}
 }
