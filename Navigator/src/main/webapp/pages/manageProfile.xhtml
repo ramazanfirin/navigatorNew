@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<ui:composition template="/pages/template/template.xhtml">
+	<ui:define name="body">
+	
+	
+	
+
+<p:panel header="Profil Yönetimi" id="panel" styleClass="panel_primefaces" style="width:1150px">  
+<h:form id="form1">
+
+<p:messages id="messages" showDetail="true" autoUpdate="true"/> 
+<br></br>
+<p:panel header="Kullanıcı Bilgileri">
+<h:panelGrid columns="4" id="displayCreate" >  
+		    <h:outputLabel value="Kullanıcı adı" for="username2"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="username2" value="#{loginController.currentUser.username}" required="true" requiredMessage="Kullacını Adı Boş olamaz" label="Kullanıcı Adı"> </h:inputText>
+			<h:message for="username2" style="color:red"/>
+			
+			<h:outputLabel value="İsim" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="name" value="#{loginController.currentUser.name}"  required="true" requiredMessage="İsim Boş olamaz" label="isim"> </h:inputText>
+			<h:message for=":form4:name"  style="color:red"/>
+			
+			<h:outputLabel value="Soyisim" ></h:outputLabel>  
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<h:inputText id="surname" value="#{loginController.currentUser.surname}" required="true" requiredMessage="Soyisim Boş olamaz"> </h:inputText>
+			<h:message  for="surname" style="color:red"/>
+			
+			<h:outputLabel value="Telefon" for="pwd2"></h:outputLabel>    
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:inputText id="phone" value="#{loginController.currentUser.phone}"  label="Telefon" required="true" requiredMessage="Telefon Boş olamaz"/> 
+			<h:message  for="phone" style="color:red"/>
+			
+			<h:outputLabel value="Email" for="pwd2"></h:outputLabel>    
+			<h:outputLabel value=":" ></h:outputLabel> 
+			<p:inputText id="email" value="#{loginController.currentUser.email}"  label="Email" required="true" requiredMessage="Email Boş olamaz"/>  
+			<h:message  for="email" style="color:red"/>	 	
+			
+			
+			
+	    	
+	    	
+	    	 </h:panelGrid> 
+	    	<p:commandButton value="Kaydet"   actionListener="#{loginController.updateUser}" />
+			
+
+   		 
+ </p:panel>
+ <p:panel header="Şİfre Güncelleme">
+ <h:panelGrid columns="4" id="displayCreate2" >  
+		    <h:outputLabel value="Eski Şİfre" for="oldpassword"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<p:password id="oldpassword" value="#{loginController.oldPassword}" required="true" requiredMessage="Eski şifre Boş olamaz" label="Kullanıcı Adı"> </p:password>
+			<h:message for="oldpassword" style="color:red"/>
+			
+			<h:outputLabel value="Yeni Şİfre" for="newpassword"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<p:password id="newpassword" value="#{loginController.newPassword}" required="true" requiredMessage="Yeni Şifre Boş olamaz" label="Kullanıcı Adı"> </p:password>
+			<h:message for="newpassword" style="color:red"/>
+			
+			<h:outputLabel value="Yeni Şİfre Tekrar" for="newpasswordAgain"></h:outputLabel>  
+		    <h:outputLabel value=":" ></h:outputLabel> 
+			<p:password id="newpasswordAgain" value="#{loginController.newPasswordAgain}" required="true" requiredMessage="Yeni Şifre Tekrar Boş olamaz" label="Kullanıcı Adı"> </p:password>
+			<h:message for="newpasswordAgain" style="color:red"/>
+			
+			
+			</h:panelGrid>
+			<p:commandButton value="Şifre Değiştir"   actionListener="#{loginController.changePassword}" />
+ 
+ </p:panel>
+</h:form>  
+
+</p:panel>
+<br></br>
+<br></br>
+
+
+<h:form id="form2">
+    
+    
+
+</h:form>
+
+ 
+
+
+
+
+
+
+
+                    
+
+	
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.nagivator.model.Company" table="Company">
+	<id name="id" column="id" type="long">
+		<generator class="native"></generator>
+	</id>
+	
+	<property name="name" column="name" type="string"></property>
+	
+	<set name="userList" table="User" inverse="true"  fetch="select" lazy="false">
+            <key>
+                <column name="companyId" not-null="true" />
+            </key>
+            <one-to-many class="com.nagivator.model.User" />
+        </set>
+
+	<set name="branchList" table="Branch" inverse="true"  fetch="select" lazy="false">
+            <key>
+                <column name="companyId" not-null="true" />
+            </key>
+            <one-to-many class="com.nagivator.model.Branch" />
+        </set>
+	
+
+	
+	
+	
+</class>
+</hibernate-mapping>
