@@ -15,7 +15,7 @@
 	<property name="email" column="email" type="string"></property>
 	<property name="phone" column="phone" type="string"></property>
 	
-	<many-to-one name="authority" class="com.nagivator.model.Authority" column="Authority" lazy="false" cascade="none" />
+	<many-to-one name="authority" class="com.nagivator.model.Authority" column="Authority" lazy="false" cascade="all" />
 
 	<property name="sendAlertMail" column="sendAlertMail" type="boolean"></property>
 	<property name="sendAlertSms" column="sendAlertSms" type="boolean"></property>

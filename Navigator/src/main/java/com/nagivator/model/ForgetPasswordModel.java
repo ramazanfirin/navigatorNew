@@ -7,6 +7,13 @@ public class ForgetPasswordModel {
 	private Date date;
 	private String email;
 	private String key;
+	private Boolean enabled=true;
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 	public Long getId() {
 		return id;
 	}

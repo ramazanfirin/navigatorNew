@@ -59,5 +59,9 @@ public interface PersistanceService {
 	public List<Sokak> getSokakList(boolean all) throws Exception ;
 	public List<Bina> getBinaList(boolean all) throws Exception ;
 	
-	public  void saveOrUpdate(ForgetPasswordModel user) throws Exception;
+	public  void saveOrUpdateForgetPassword(ForgetPasswordModel user) throws Exception;
+	
+	public ForgetPasswordModel findForgetPasswordByKey(String key);
+	
+	public void updatePassword(String username,String password); 
 }

@@ -59,6 +59,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 			
 		}
 
+		
 
 //		public void delete(Object user) throws Exception {
 //			hibernateTemplate.udelete(user);
@@ -282,10 +283,30 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		}
 
 
-		@Override
-		public void saveOrUpdate(ForgetPasswordModel user) throws Exception {
+
+		public void saveOrUpdateForgetPassword(ForgetPasswordModel user) throws Exception {
 			getHibernateTemplate().saveOrUpdate(user);
 			
+		}
+
+
+		@Override
+		public ForgetPasswordModel findForgetPasswordByKey(String key) {
+			List result = getHibernateTemplate().find("from ForgetPasswordModel as c where c.key ='"+ key+"'");
+			if(result.size()>0) 
+				return (ForgetPasswordModel)result.get(0);
+			else
+				return null;
+		}
+
+
+		@Override
+		public void updatePassword(String username, String password) {
+			Query updateQuery = getSession().createQuery("update User u set u.password = :password where username = :username")
+	                   .setParameter("username", username)
+	                   .setParameter("password", password);
+		
+			int noOfUpdatedRows = updateQuery.executeUpdate();
 		}
         
 

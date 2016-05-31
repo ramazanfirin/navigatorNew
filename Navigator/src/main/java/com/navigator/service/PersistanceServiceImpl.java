@@ -172,9 +172,20 @@ public class PersistanceServiceImpl implements PersistanceService {
 		return persistanceDao.getUserByMail(mail);
 	}
 
+
+	public void saveOrUpdateForgetPassword(ForgetPasswordModel user) throws Exception {
+		persistanceDao.saveOrUpdateForgetPassword(user);
+		
+	}
+
 	@Override
-	public void saveOrUpdate(ForgetPasswordModel user) throws Exception {
-		persistanceDao.saveOrUpdate(user);
+	public ForgetPasswordModel findForgetPasswordByKey(String key) {
+		return persistanceDao.findForgetPasswordByKey(key);
+	}
+
+	@Override
+	public void updatePassword(String username, String password) {
+		persistanceDao.updatePassword(username, password);
 		
 	}
 

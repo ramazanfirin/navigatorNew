@@ -79,7 +79,7 @@ public class UserController extends BaseController{
 			loadCurrentUser();
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_INFO,"Isleminiz tamamlamnd,",""));
 		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
 		}
 		
@@ -90,7 +90,11 @@ public class UserController extends BaseController{
 	
 	public void createUser(){
 		try{
-					
+			if(getServiceProvider().getPersistanceService().getUserByMail(newUser.getEmail())!=null){
+				FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Bu mail adresi kullanılmaktadir",""));
+				return;
+			}
+			
 			getServiceProvider().getPersistanceService().saveOrUpdate(newUser);
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_INFO,"Isleminiz tamamlamnd,",""));
 			resetUserObject();	
@@ -100,7 +104,7 @@ public class UserController extends BaseController{
 //			RequestContext.getCurrentInstance().update("dataGrid");
 //			RequestContext.getCurrentInstance().update(":form1:dataGrid");
 		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
 		}
 		
@@ -111,14 +115,14 @@ public class UserController extends BaseController{
 		try{
 			User currentUser =getCurrentUser();
 			if(!currentUser.getPassword().equals(oldPassword)){
-				FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"yanlış şifre.",""));
+				FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"yanlÄ±ÅŸ ÅŸifre.",""));
 				return;
 			}	
 			currentUser.setPassword(newPassword);
 			getServiceProvider().getPersistanceService().saveOrUpdate(currentUser);
 			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Islem Basarili.",""));
 		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
 		}
 	}
@@ -130,7 +134,7 @@ public class UserController extends BaseController{
 			resetUserObject();	
 			search();
 		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
 		}
 	}
@@ -139,7 +143,7 @@ public class UserController extends BaseController{
 		try{
 			userList = getServiceProvider().getPersistanceService().searchUser(userName);
 		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
 			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
 		}
 	}
