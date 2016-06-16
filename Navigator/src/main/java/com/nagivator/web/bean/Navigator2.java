@@ -4,8 +4,11 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
 import org.primefaces.component.gmap.GMap;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.OverlaySelectEvent;
@@ -21,6 +25,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
+import com.nagivator.model.Branch;
 import com.nagivator.model.Order;
 import com.nagivator.model.OrderPriority;
 import com.nagivator.model.Poi;
@@ -29,7 +34,6 @@ import com.navigator.util.CityCurfTest;
 import com.navigator.util.CityCurfUtil;
 import com.navigator.util.GeoUtil;
 import com.navigator.util.NameValuePair;
-import com.navigator.util.OnlineCoordinateConverter;
 import com.navigator.util.Util;
 
 @ManagedBean
@@ -38,6 +42,8 @@ public class Navigator2 extends BaseController implements Serializable {
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 
+	private static Logger LOGGER =Logger.getLogger(Navigator2.class);
+	
 	public Navigator2() throws Exception {
 		super();
 		try {
@@ -92,6 +98,20 @@ public class Navigator2 extends BaseController implements Serializable {
 	
 	Vehicle vehicle = new Vehicle();
 	
+	Branch branch = new Branch();
+	
+	Map<String,Long> vehicleOptions = new HashMap<String,Long>();
+	
+	List<Branch> branchList = new ArrayList<Branch>();
+	
+	public Branch getBranch() {
+		return branch;
+	}
+
+	public void setBranch(Branch branch) {
+		this.branch = branch;
+	}
+
 	OrderPriority priority = new OrderPriority();
 	
 	boolean sendImmediately=true;
@@ -304,6 +324,11 @@ public void onMarkerSelect(OverlaySelectEvent event) {
 		System.out.println("dikkat "+ lat+","+lng);
 		//FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Selected",marker.getTitle()));
 		setDescription("");;
+		vehicleOptions= new HashMap<String, Long>();
+		branchList = getServiceProvider().getPersistanceService().getBranchList();
+		branch = new Branch();
+		if(branchList.size()>0)
+		vehicleOptions= prepareVehicleList(branchList.get(0).getId());
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -376,13 +401,21 @@ public String showInfoWindow(List<NameValuePair> list){
 	}
 	
 public void sendCoordinateImmediately() throws Exception{
-		
+	vehicle =getServiceProvider().getPersistanceService().getVechile(vehicle.getId());
+	branch =getServiceProvider().getPersistanceService().getBranch(branch.getId());
+	if(vehicle.getDevice().getRegId().equals("") || vehicle.getDevice().getRegId()==null ){
+		FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seçilen araçtaki cihaz kayıt edilmemiş",""));
+		return;
+	}
+	
 		sendImmediately = true;
 		sendCoordinate();
 	}
 	
 	public void sendCoordinate() throws Exception{
 		try {
+			currentUser = getCurrentUser();
+			vehicle =getServiceProvider().getPersistanceService().getVechile(vehicle.getId());
 			if(description==null || description.equals("")){
 				//FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata Olustu", "Not Alani bos olamaz"));
 				//return;
@@ -397,6 +430,7 @@ public void sendCoordinateImmediately() throws Exception{
 			order.setUser(currentUser);
 			order.setDate(new Date());
 			order.setAddress(description);
+			order.setBranch(branch);
 			
 			List<NameValuePair> list = (List<NameValuePair>)marker.getData();
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
@@ -408,6 +442,8 @@ public void sendCoordinateImmediately() throws Exception{
 					order.setMahalle(nameValuePair.getValue());
 				}if(nameValuePair.getName().equals("Sokak")){
 					order.setSokak(nameValuePair.getValue());
+				}if(nameValuePair.getName().equals("KapiNo")){
+					order.setBina(nameValuePair.getValue());
 				}
 			}
 			
@@ -417,11 +453,12 @@ public void sendCoordinateImmediately() throws Exception{
 			
 			order.getStatus().setId(Util.ORDER_STATUS_NEW);
 			order.setPriority(priority);
+			//getServiceProvider().getPersistanceService().saveOrUpdate(currentUser);
 			getServiceProvider().getPersistanceService().saveOrUpdate(order);
 			
 			Order tempOrder = (Order)getServiceProvider().getPersistanceService().getObject(Order.class, order.getId());
 			Util.updateUser(tempOrder.getVehicle().getDevice().getRegId(),tempOrder, "newOrder",sendImmediately);
-			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "koordinat G�nderildi",""));
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "koordinat Gönderildi",""));
 			sendImmediately = false;
 			RequestContext.getCurrentInstance().execute("hideDialog()");
 		} catch (Exception e) {
@@ -430,6 +467,20 @@ public void sendCoordinateImmediately() throws Exception{
 			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "koordinat tespit edilirken hata olustu",""));
 		}
 		
+		
+	}
+	
+public void branchOnChange() throws Exception{
+		
+		try {
+			//mahalleList = CityCurfUtil.getMahalleList(ilce);
+			vehicleOptions = prepareVehicleList(branch.getId());
+			System.out.println("onchange calisti");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata Olustu","Hata Olustu"));
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -477,6 +528,25 @@ public void ilceOnChange() throws Exception{
 		}
 		
 	}
+	
+	public Map<String,Long> prepareVehicleList(Long branchId){
+		Map<String,Long> map = new HashMap<String,Long>();
+		try{
+			
+			Branch branch =  getServiceProvider().getPersistanceService().getBranch(branchId);
+			Set<Vehicle> vehicleList = branch.getVehicleList();
+			for (Iterator iterator = vehicleList.iterator(); iterator.hasNext();) {
+				Vehicle vehicle = (Vehicle) iterator.next();
+				map.put(vehicle.getPlate(),vehicle.getId());
+				
+			}
+		}catch(Exception e){
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluÅŸtu",""));
+			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
+		}
+		return map;
+	}
+	
 	
 	public GMap getMap() {
 		return map;
@@ -744,6 +814,22 @@ public void ilceOnChange() throws Exception{
 
 	public void setMeskunMahal(String meskunMahal) {
 		this.meskunMahal = meskunMahal;
+	}
+
+	public void setVehicleOptions(Map<String, Long> vehicleOptions) {
+		this.vehicleOptions = vehicleOptions;
+	}
+
+	public Map<String, Long> getVehicleOptions() {
+		return vehicleOptions;
+	}
+
+	public List<Branch> getBranchList() {
+		return branchList;
+	}
+
+	public void setBranchList(List<Branch> branchList) {
+		this.branchList = branchList;
 	}
 
 

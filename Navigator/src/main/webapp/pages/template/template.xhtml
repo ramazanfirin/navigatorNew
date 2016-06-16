@@ -51,8 +51,8 @@ if(input){
  	if (!place.geometry) {
    	return;
  	}
- 	document.getElementById('accordPanel:importantPlaceForm:hiddenLat').value = place.geometry.location.k;
- 	document.getElementById('accordPanel:importantPlaceForm:hiddenLng').value = place.geometry.location.A;
+ 	document.getElementById('accordPanel:importantPlaceForm:hiddenLat').value = place.geometry.location.lat();
+ 	document.getElementById('accordPanel:importantPlaceForm:hiddenLng').value = place.geometry.location.lng();
  	rc();
 	});
 

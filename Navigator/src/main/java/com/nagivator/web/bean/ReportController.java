@@ -84,6 +84,22 @@ public class ReportController extends BaseController{
 		}
 	}
 	
+	public void complated(){
+		try{
+			Long orderId = order.getId();
+			order.getStatus().setId(Util.ORDER_STATUS_OPERATOR_COMPLETED);
+			getServiceProvider().getPersistanceService().saveOrUpdate(order);
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_INFO,"Isleminiz tamamlamnd,",""));
+			reset();	
+			search();
+			Order tempOrder = (Order)getServiceProvider().getPersistanceService().getObject(Order.class, orderId);
+			//Util.updateUser(tempOrder.getVehicle().getDevice().getRegId(),tempOrder, "cancelled",false);
+		}catch(Exception e){
+			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
+			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
+		}
+	}
+	
 	public void showDetails(){
 		emptyModel = new DefaultMapModel();
 		Set<TrackItem> trackItems = order.getTrackItems();

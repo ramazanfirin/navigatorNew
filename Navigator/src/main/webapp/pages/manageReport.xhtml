@@ -72,11 +72,11 @@
         </p:column>
         
         <p:column headerText="Durum" style="width:24%">
-            <h:outputText value="#{userItem.status.description}" />
+            <h:outputText value="#{userItem.status.name}" />
         </p:column>
         
          <p:column headerText="Öncelik" style="width:24%">
-            <h:outputText value="#{userItem.priority.description}" />
+            <h:outputText value="#{userItem.priority.name}" />
         </p:column>
         
         <p:column headerText="Enlem" style="width:24%">
@@ -107,16 +107,27 @@
             <h:outputText value="#{userItem.bina}" />
         </p:column>
         
+        <p:column headerText="şube" style="width:24%">
+            <h:outputText value="#{userItem.vehicle.branch.name}" />
+        </p:column>
+        
         <p:column headerText="Araç" style="width:24%">
             <h:outputText value="#{userItem.vehicle.plate}" />
         </p:column>
         
         <p:column headerText="Operator" style="width:24%">
-            <h:outputText value="#{userItem.user.username}" />
+            <h:outputText value="#{userItem.user.name} #{userItem.user.surname}" />
         </p:column>
         
         <p:column style="width:14%" headerText="İptal Et">
                 <p:commandButton id="selectButton2" update=":form2:dataGrid" action="#{reportController.cancel}"  icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{userItem}" target="#{reportController.order}" />
+                	
+            	</p:commandButton>
+        </p:column>
+        
+        <p:column style="width:14%" headerText="Tamamlandı">
+                <p:commandButton id="selectButton26" update=":form2:dataGrid" action="#{reportController.complated}"  icon="ui-icon-search" title="View">
                 	<f:setPropertyActionListener value="#{userItem}" target="#{reportController.order}" />
                 	
             	</p:commandButton>

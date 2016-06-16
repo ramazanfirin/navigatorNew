@@ -12,6 +12,7 @@ public class Order extends BasicObject{
 
 	private User user;
 	private Vehicle vehicle;
+	private Branch branch;
 	private String lat;
 	private String lng;
 	private Date date;
@@ -104,6 +105,12 @@ public class Order extends BasicObject{
 	}
 	public void setPriority(OrderPriority priority) {
 		this.priority = priority;
+	}
+	public Branch getBranch() {
+		return branch;
+	}
+	public void setBranch(Branch branch) {
+		this.branch = branch;
 	}
 	
 	

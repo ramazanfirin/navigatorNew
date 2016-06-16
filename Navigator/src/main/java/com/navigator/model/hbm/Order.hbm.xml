@@ -20,6 +20,8 @@
 	
 	<many-to-one name="vehicle" class="com.nagivator.model.Vehicle" column="vehicle" lazy="false" cascade="none" />
 	
+	<many-to-one name="branch" class="com.nagivator.model.Branch" column="branch" lazy="false" cascade="none" />
+	
 	<many-to-one name="status" class="com.nagivator.model.OrderStatus" column="status" lazy="false" cascade="none" />
 
 	<many-to-one name="priority" class="com.nagivator.model.OrderPriority" column="priority" lazy="false" cascade="none" />

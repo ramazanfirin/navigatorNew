@@ -178,15 +178,32 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		}
 
 
-		public List<Order> getOpenOrders(String imei) throws Exception {
-			//String query = 	"from Order as c where 1=1 and c.vehicle.device.imei='"+imei+"' and c.status.id in(1,2,4)";
-			String query = 	"from Order as c where 1=1 and c.company.id="+ getCompanyId()+"  and c.status.id in(1,2,4)";
+		public List<Order> getOpenOrders(String imei,boolean checkCompany) throws Exception {
+			String query2 = 	"from Device v where v.imei='"+imei+"'";
+			List list2 = getHibernateTemplate().find(query2);
+			
+			String query1 = 	"from Vehicle v where v.device.imei='"+imei+"'";
+			List list = getHibernateTemplate().find(query1);
+			
+			
+			
+			String query = 	"from Order as c where 1=1 and c.branch.id in (select v.branch.id from Vehicle v where v.device.imei='"+imei+"')";
+			if(checkCompany)
+				query = query+" and c.company.id="+ getCompanyId();
+			
+			query = query+" and c.status.id in(1,2)";
 			return getHibernateTemplate().find(query);
 		}
 
 
-		public Device getDeviceByImei(String imei) throws Exception {
-			List result = getHibernateTemplate().find("from Device as c where  c.company.id="+ getCompanyId()+" and c.enabled=true and c.imei ='"+ imei+"'");
+		public Device getDeviceByImei(String imei,boolean checkCompany) throws Exception {
+			String query = 	"from Device as c where 1=1  ";
+			if(checkCompany)
+				query = query+" and c.company.id="+ getCompanyId();
+			
+			query = query+" and c.enabled=true and c.imei ='"+ imei+"'";
+			
+			List result = getHibernateTemplate().find(query);
 			if(result.size()>0)
 				return (Device)result.get(0);
 			else
@@ -307,6 +324,12 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 	                   .setParameter("password", password);
 		
 			int noOfUpdatedRows = updateQuery.executeUpdate();
+		}
+
+
+		@Override
+		public Branch getBranch(Long id) throws Exception {
+			return (Branch)getHibernateTemplate().get(Branch.class, id);
 		}
         
 

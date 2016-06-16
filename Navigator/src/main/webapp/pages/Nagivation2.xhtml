@@ -58,7 +58,7 @@ min-height: 150px;
 		<p:panel id="basic35" header="Önemli Yer Arama"  style="margin-bottom:20px;margin-right:20px;">
     		 <h:panelGrid columns="2">
     		 	<h:outputLabel id="address1" value="İsim"></h:outputLabel>
-        		<h:inputText id="address3" value="#{navigator.importantPlace}" style="width:250px"></h:inputText>
+        		<h:inputText id="address3" value="#{navigator.importantPlace}" style="width:250px" onchange="happycode()"></h:inputText>
 				
 				<h:panelGrid columns="3">
 				
@@ -187,9 +187,16 @@ min-height: 150px;
 					<br/>
 					<p:panel id="Parametreler"  header="Parametreler">
 					<h:panelGrid columns="2">
+					
+						<h:outputLabel value="Şube/İstasyon"> </h:outputLabel>
+						<p:selectOneMenu id="suburbs266" value="#{navigator.branch.id}" style="width:250px">
+													<f:selectItems value="#{navigator.branchList}" var="c" itemLabel="#{c.name}" itemValue="#{c.id}" />
+								 <p:ajax event="change" update="suburbs2" listener="#{navigator.branchOnChange}" />
+						</p:selectOneMenu>  
+					
 						<h:outputLabel value="Araç Plakası"> </h:outputLabel>
 						<p:selectOneMenu id="suburbs2" value="#{navigator.vehicle.id}" style="width:250px">
-								<f:selectItems value="#{deviceController.vehicleOptions}" />
+								<f:selectItems value="#{navigator.vehicleOptions}" />
 						</p:selectOneMenu>  
 					
 						<h:outputLabel value="Aciklama"> </h:outputLabel>

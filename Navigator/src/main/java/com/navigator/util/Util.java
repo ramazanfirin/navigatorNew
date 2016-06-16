@@ -29,7 +29,8 @@ public class Util {
 	public static final Long ORDER_STATUS_START=new Long(2);
 	public static final Long ORDER_STATUS_OPERATOR_CANCELLED=new Long(3);
 	public static final Long ORDER_STATUS_USER_CANCELLED=new Long(4);
-	public static final Long ORDER_STATUS_COMPLETED=new Long(5);
+	public static final Long ORDER_STATUS_OPERATOR_COMPLETED=new Long(5);
+	public static final Long ORDER_STATUS_USER_COMPLETED=new Long(6);
 	
 	public static final Long ORDER_PRIORITY_HIGH=new Long(1);
 	public static final Long ORDER_PRIORITY_MEDIUM=new Long(2);

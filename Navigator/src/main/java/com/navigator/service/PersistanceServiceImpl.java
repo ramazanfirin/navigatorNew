@@ -87,12 +87,12 @@ public class PersistanceServiceImpl implements PersistanceService {
 		return persistanceDao.searchOrder(start, End);
 	}
 
-	public List<Order> getOpenOrders(String imei) throws Exception {
-		return persistanceDao.getOpenOrders(imei);
+	public List<Order> getOpenOrders(String imei,boolean checkCompany) throws Exception {
+		return persistanceDao.getOpenOrders(imei,checkCompany);
 	}
 
-	public Device getDeviceByImei(String imei) throws Exception {
-		return persistanceDao.getDeviceByImei(imei);
+	public Device getDeviceByImei(String imei,boolean checkCompany) throws Exception {
+		return persistanceDao.getDeviceByImei(imei,checkCompany);
 	}
 
 	public Object getObject(Class clazz, Long id) throws Exception {
@@ -187,6 +187,11 @@ public class PersistanceServiceImpl implements PersistanceService {
 	public void updatePassword(String username, String password) {
 		persistanceDao.updatePassword(username, password);
 		
+	}
+
+	@Override
+	public Branch getBranch(Long id) throws Exception {
+		return persistanceDao.getBranch(id);
 	}
 
 

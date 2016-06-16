@@ -84,18 +84,20 @@ public class RestServer {
     	BeanFactory context = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 		ServiceProvider serviceProvider= (ServiceProvider)context.getBean("serviceProvider");
     	PersistanceService a= serviceProvider.getPersistanceService();
-		a.getOpenOrders(imei);
+		//a.getOpenOrders(imei,false);
     	System.out.println("imei has come ="+imei);
     	
     
     	List<Order> list = new ArrayList<Order>();
     	list.add(new Order());
     	
-    	list=a.getOpenOrders(imei);
+    	list=a.getOpenOrders(imei,false);
     	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			Order order = (Order) iterator.next();
 			order.setVehicle(null);
+			order.setCompany(null);
 			order.setUser(null);
+			order.setBranch(null);
 		}
     	return list;
 	}
@@ -109,7 +111,7 @@ public class RestServer {
    		ServiceProvider serviceProvider= (ServiceProvider)context.getBean("serviceProvider");
    		PersistanceService service= serviceProvider.getPersistanceService();  
    		
-       Device device = service.getDeviceByImei(imei);
+       Device device = service.getDeviceByImei(imei,false);
        if(device==null)
     	   return "NOK";
        	
@@ -127,7 +129,7 @@ public class RestServer {
    		ServiceProvider serviceProvider= (ServiceProvider)context.getBean("serviceProvider");
    		PersistanceService service= serviceProvider.getPersistanceService();  
    		
-       Device device = service.getDeviceByImei(imei);
+       Device device = service.getDeviceByImei(imei,false);
        if(device==null)
     	   return "NOK";
        	

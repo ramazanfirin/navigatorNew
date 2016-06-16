@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.springframework.stereotype.Component;
 
+import com.nagivator.model.Company;
 import com.nagivator.model.User;
 
 
@@ -42,6 +43,8 @@ public class UserController extends BaseController{
 	public String getLoggedUserNameSurname() throws Exception{
 		return getCurrentUser().getName()+" "+getCurrentUser().getSurname();
 	}
+	
+	
 	
 	public String getContextPath(){
 		

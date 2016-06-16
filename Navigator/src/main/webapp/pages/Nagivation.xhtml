@@ -172,7 +172,7 @@ min-height: 150px;
 					binding="#{navigator2.map}"
 					widgetVar="map">
 					<p:ajax event="overlaySelect" oncomplete="PF('sendDialog').show()"
-						listener="#{navigator2.onMarkerSelect}"  update=":sendDialogForm:datatable" /> >
+						listener="#{navigator2.onMarkerSelect}"  update=":sendDialogForm" /> >
 				
 
 				</p:gmap>
@@ -234,9 +234,15 @@ min-height: 150px;
 					<br/>
 					<p:panel id="Parametreler"  header="Parametreler">
 					<h:panelGrid columns="2">
+						<h:outputLabel value="Şube/İstasyon"> </h:outputLabel>
+						<p:selectOneMenu id="suburbs266" value="#{navigator2.branch.id}" style="width:250px">
+											<f:selectItems value="#{navigator2.branchList}" var="c" itemLabel="#{c.name}" itemValue="#{c.id}" />
+								 <p:ajax event="change" update="suburbs2" listener="#{navigator2.branchOnChange}" />
+						</p:selectOneMenu>  
+					
 						<h:outputLabel value="Araç Plakası"> </h:outputLabel>
 						<p:selectOneMenu id="suburbs2" value="#{navigator2.vehicle.id}" style="width:250px">
-								<f:selectItems value="#{deviceController.vehicleOptions}" />
+								<f:selectItems value="#{navigator2.vehicleOptions}" />
 						</p:selectOneMenu>  
 					
 						<h:outputLabel value="Aciklama"> </h:outputLabel>

@@ -22,7 +22,8 @@ INSERT INTO `OrderStatus` VALUES (1, 'Yeni',1);
 INSERT INTO `OrderStatus` VALUES (2, 'Basladi',1);
 INSERT INTO `OrderStatus` VALUES (3, 'Operator iptal etti',1);
 INSERT INTO `OrderStatus` VALUES (4, 'Kullanici iptal etti',1);
-INSERT INTO `OrderStatus` VALUES (5, 'Tamamlandi',1);
+INSERT INTO `OrderStatus` VALUES (5, 'Operator : Tamamlandi',1);
+INSERT INTO `OrderStatus` VALUES (6, 'Kullanici : Tamamlandi',1)
 
 INSERT INTO `OrderPriority` VALUES (1, 'Yuksek',1);
 INSERT INTO `OrderPriority` VALUES (2, 'Orta',1);

@@ -89,7 +89,7 @@ public class OrderServer {
     	OrderStatus orderStatus = new OrderStatus();
     	
     	if("completed".equals(status))
-    		orderStatus.setId(Util.ORDER_STATUS_COMPLETED);
+    		orderStatus.setId(Util.ORDER_STATUS_USER_COMPLETED);
     	if("started".equals(status))
     		orderStatus.setId(Util.ORDER_STATUS_START);
     	if("cancelled".equals(status))

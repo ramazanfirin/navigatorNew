@@ -30,7 +30,7 @@ public class DeviceController extends BaseController{
 	List<Device> deviceList = new ArrayList<Device>();
 	
 	String msisdn;
-	Map<String,Long> vehicleOptions = new HashMap<String,Long>();
+
 	
 	public DeviceController() {
 		super();
@@ -88,23 +88,7 @@ public class DeviceController extends BaseController{
 		}
 	}
 	
-	public Map<String,Long> prepareVehicleList(){
-		Map<String,Long> map = new HashMap<String,Long>();
-		try{
-			
-			
-			List<Vehicle> vehicleList = getServiceProvider().getPersistanceService().getVechiles();
-			for (Iterator iterator = vehicleList.iterator(); iterator.hasNext();) {
-				Vehicle vehicle = (Vehicle) iterator.next();
-				map.put(vehicle.getPlate(),vehicle.getId());
-				
-			}
-		}catch(Exception e){
-			FacesContext.getCurrentInstance().addMessage(null , new FacesMessage(FacesMessage.SEVERITY_ERROR,"Hata oluştu",""));
-			LOGGER.error("Hata Olutu:"+ e.getMessage()  , e);
-		}
-		return map;
-	}
+
 
 	
 
@@ -161,33 +145,6 @@ public class DeviceController extends BaseController{
 	public void setMsisdn(String msisdn) {
 		this.msisdn = msisdn;
 	}
-
-
-
-
-
-
-
-	public Map<String,Long> getVehicleOptions() {
-		//if(vehicleOptions.size()==0){
-			vehicleOptions = prepareVehicleList();
-		//}
-		
-		return vehicleOptions;
-	}
-
-
-
-
-
-
-
-	public void setVehicleOptions(Map<String,Long> vehicleOptions) {
-		this.vehicleOptions = vehicleOptions;
-	}
-	
-	
-	
 
 
 }
