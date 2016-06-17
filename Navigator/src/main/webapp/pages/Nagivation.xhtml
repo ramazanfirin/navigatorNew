@@ -42,11 +42,28 @@ min-height: 150px;
 		<p:accordionPanel style="border:1px solid;height:100%" id="accordPanel">
        
    
-		 <p:tab title="Detaylı adres girişi">
+		<p:tab title="Detaylı adres girişi">
 <!-- 		 <p:panel id="basic" header="Detaylı adres girişi"> -->
         <h:form id="detay">
         <p:messages  id="messages" autoUpdate="true"/>
         <h:panelGrid columns="3">
+        	
+        	<h:outputLabel value="İl"> </h:outputLabel>
+        	<h:outputLabel value=":"> </h:outputLabel>
+        	<p:selectOneMenu id="il" value="#{navigator2.il}" style="width:150px;" required="true" requiredMessage="İlce Bos Olmaz">
+	           <f:selectItem itemLabel="KAYSERİ" itemValue="KAYSERİ"/>
+	           <f:selectItem itemLabel="İSTANBUL" itemValue="İSTANBUL"/>
+	           <f:selectItem itemLabel="İZMİR" itemValue="İZMİR"/>
+	            <f:selectItem itemLabel="DENİZLİ" itemValue="DENİZLİ"/>
+	             <f:selectItem itemLabel="KOCAELİ" itemValue="KOCAELİ"/>
+	               <f:selectItem itemLabel="MANİSA" itemValue="MANİSA"/>
+	                 <f:selectItem itemLabel="KAHRAMANMARAŞ" itemValue="KAHRAMANMARAŞ"/>
+	                  <f:selectItem itemLabel="BALIKESİR" itemValue="BALIKESİR"/>
+	                   <f:selectItem itemLabel="SAKARYA" itemValue="SAKARYA"/>
+	            <p:ajax event="change" update="il"  listener="#{navigator2.ilOnChange}" />
+        	</p:selectOneMenu>
+        	
+        	
         	<h:outputLabel value="İlçe"> </h:outputLabel>
         	<h:outputLabel value=":"> </h:outputLabel>
         	<p:selectOneMenu id="ilce" value="#{navigator2.ilce}" style="width:150px;" required="true" requiredMessage="İlce Bos Olmaz">
@@ -83,7 +100,21 @@ min-height: 150px;
 <!--     </p:panel> -->
 </h:form>
     </p:tab>
-    <p:tab title="Önemli Yer Arama" >
+		<p:tab title="Genel Arama">
+			<h:form>
+				<p:messages id="messages"  autoUpdate="true"/>
+				
+				<h:panelGrid columns="2" style="margin-left:-5px">
+    		 	<h:outputLabel id="address133" value="İsim"></h:outputLabel>
+        		<h:inputText id="address3333" value="#{navigator2.generalSearch}" style="width:200px;"></h:inputText>
+				
+				<p:commandButton value="Ara" action="#{navigator2.searchGeneral}" oncomplete="PF('generalSearchDlg').show()" update=":generaldialogForm"> </p:commandButton>
+        	</h:panelGrid>
+			</h:form>
+			
+		</p:tab>
+
+        <p:tab title="Önemli Yer Arama" >
 		<h:form id="importantPlaceForm">
 		 <p:messages id="messages"  autoUpdate="true"/>
 		<h:inputHidden id="hiddenLat" value="#{navigator2.hiddenLat}" />
@@ -172,12 +203,35 @@ min-height: 150px;
 					binding="#{navigator2.map}"
 					widgetVar="map">
 					<p:ajax event="overlaySelect" oncomplete="PF('sendDialog').show()"
-						listener="#{navigator2.onMarkerSelect}"  update=":sendDialogForm" /> >
+						listener="#{navigator2.onMarkerSelect}"  update=":sendDialogForm" /> 
 				
 
 				</p:gmap>
 
 </h:form>
+
+<p:dialog widgetVar="generalSearchDlg" showEffect="fade" closable="true" header="Arama Sonuçları" width="500" height="500">
+
+					<h:form id="generaldialogForm">
+				
+					<p:messages id="messages" autoUpdate="true"/>
+					<p:dataTable value="#{navigator2.generalSearchList}" var="place">
+							<p:column headerText="Yer ismi">
+								<h:outputText value="#{place.value}" />
+							</p:column>
+
+							<p:column style="width:14%" headerText="Seç">
+                <p:commandButton id="selectButton2999" ajax="true" update=":formMap:map" action="#{navigator2.selectGeneralSearchItem}" oncomplete="PF('generalSearchDlg').hide()" icon="ui-icon-search" title="View">
+                	<f:setPropertyActionListener value="#{place}" target="#{navigator2.generalSearchPlace}" />
+                	
+            	</p:commandButton>
+        </p:column>
+
+						</p:dataTable>
+					
+</h:form>
+
+				</p:dialog>
 
 <p:dialog widgetVar="dlg" showEffect="fade" closable="false">
 

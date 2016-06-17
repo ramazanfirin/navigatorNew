@@ -26,6 +26,7 @@ import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
 
 import com.nagivator.model.Branch;
+import com.nagivator.model.KeyValueDTO;
 import com.nagivator.model.Order;
 import com.nagivator.model.OrderPriority;
 import com.nagivator.model.Poi;
@@ -104,6 +105,10 @@ public class Navigator2 extends BaseController implements Serializable {
 	
 	List<Branch> branchList = new ArrayList<Branch>();
 	
+	String generalSearch;
+	
+	String il;
+	
 	public Branch getBranch() {
 		return branch;
 	}
@@ -125,6 +130,44 @@ public class Navigator2 extends BaseController implements Serializable {
 	boolean showMeskunMahal=false;
 	
 	String meskunMahal;
+	List<KeyValueDTO> generalSearchList = new ArrayList<KeyValueDTO>();
+	KeyValueDTO generalSearchPlace;
+	
+	public void selectGeneralSearchItem(){
+		System.out.println(generalSearchPlace.getKey());
+		try {
+			List<KeyValueDTO> list = CityCurfUtil.genelAramaByNumber(generalSearchPlace.getKey());
+			String lat = list.get(1).getValue();
+			String lng = list.get(0).getValue();
+			List<NameValuePair> dataList  =new ArrayList<NameValuePair>();
+			dataList.add(new NameValuePair("Enlem", lat));
+			dataList.add(new NameValuePair("Boylam", lng));
+			
+			for (int i=2;i<list.size();i++) {
+				KeyValueDTO keyValueDTO = list.get(i);
+				dataList.add(new NameValuePair("", keyValueDTO.getValue()));
+			}
+			
+			addMarkerToMap(Double.valueOf(lat),Double.valueOf(lng),dataList,"");
+			setCenter(lat, lng);
+			setZoom("17");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata Olustu","Hata Olustu"));
+		}
+	}
+	
+	public void searchGeneral(){
+		try {
+			generalSearchList = CityCurfUtil.genelArama(generalSearch);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata Olustu","Hata Olustu"));
+		}
+	}
 	
 	public void hideMeskunMahal(){
 		showMeskunMahal = false;
@@ -246,7 +289,8 @@ public class Navigator2 extends BaseController implements Serializable {
 //		lngFloat = lngFloat+Float.parseFloat("31.2");
 //		latFloat = latFloat+Float.parseFloat("102.5"); 
 		//List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lngFloat), String.valueOf(latFloat));
-		List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lng), String.valueOf(lat));
+		//List<NameValuePair> values = CityCurfUtil.getInformaitonOfCoordinates(String.valueOf(lng), String.valueOf(lat));
+		List<NameValuePair> values = new ArrayList<NameValuePair>();
 		values.add(new NameValuePair("Enlem", String.valueOf(lat)));
 		values.add(new NameValuePair("Boylam", String.valueOf(lng)));
 		return values;
@@ -378,6 +422,8 @@ public String showInfoWindow(List<NameValuePair> list){
 	
 	public String getLabelForMarker(Object data){
 		String result =	"";
+		if(data==null)
+			return "";
 		List<NameValuePair> list = (List<NameValuePair>)data;
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			NameValuePair nameValuePair = (NameValuePair) iterator.next();
@@ -528,6 +574,21 @@ public void ilceOnChange() throws Exception{
 		}
 		
 	}
+	
+public void ilOnChange() throws Exception{
+		
+		try {
+			if(!il.equals("KAYSERİ"))
+				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, il+" ili üzerindeki çalışma devam etmektedir",il+" ili üzerindeki çalışma devam etmektedir"));
+			il="kayseri";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata Olustu","Hata Olustu"));
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	public Map<String,Long> prepareVehicleList(Long branchId){
 		Map<String,Long> map = new HashMap<String,Long>();
@@ -830,6 +891,38 @@ public void ilceOnChange() throws Exception{
 
 	public void setBranchList(List<Branch> branchList) {
 		this.branchList = branchList;
+	}
+
+	public String getGeneralSearch() {
+		return generalSearch;
+	}
+
+	public void setGeneralSearch(String generalSearch) {
+		this.generalSearch = generalSearch;
+	}
+
+	public List<KeyValueDTO> getGeneralSearchList() {
+		return generalSearchList;
+	}
+
+	public void setGeneralSearchList(List<KeyValueDTO> generalSearchList) {
+		this.generalSearchList = generalSearchList;
+	}
+
+	public KeyValueDTO getGeneralSearchPlace() {
+		return generalSearchPlace;
+	}
+
+	public void setGeneralSearchPlace(KeyValueDTO generalSearchPlace) {
+		this.generalSearchPlace = generalSearchPlace;
+	}
+
+	public String getIl() {
+		return il;
+	}
+
+	public void setIl(String il) {
+		this.il = il;
 	}
 
 
