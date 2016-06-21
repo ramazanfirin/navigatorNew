@@ -38,11 +38,13 @@ public interface PersistanceDao {
 	public List<Branch> getBranchList() throws Exception;
 	public Branch getBranch(Long id) throws Exception;
 	
-	public List<Order> searchOrder(Date start,Date End) throws Exception;
+	public List<Order> searchOrder(Date start,Date End,String status) throws Exception;
+	
 	
 	public List<Order> getOpenOrders(String imei,boolean checkCompany) throws Exception;
 	
 	public Device getDeviceByImei(String imei,boolean checkCompany) throws Exception;
+	public void updateDeviceByImei(String imei,String id) throws Exception;
 	
 	public Object getObject(Class clazz,Long id) throws Exception;
 	

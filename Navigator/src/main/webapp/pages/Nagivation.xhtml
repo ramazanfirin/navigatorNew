@@ -315,11 +315,11 @@ min-height: 150px;
 						
 
 						<f:facet name="footer">
-							<p:commandButton value="Gönder" rendered="false"
+							<p:commandButton value="Gönder" 
 								actionListener="#{navigator2.sendCoordinate}" update="messages"
 								oncomplete="hideDialog()" />
 								
-							<p:commandButton value="Gönder(Yönlendirme Hemen Başlasın)"
+							<p:commandButton value="Gönder(Yönlendirme Hemen Başlasın)" rendered="false"
 								actionListener="#{navigator2.sendCoordinateImmediately}" update="messages"
 								
 								/>	

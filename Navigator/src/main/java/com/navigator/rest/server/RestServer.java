@@ -115,8 +115,9 @@ public class RestServer {
        if(device==null)
     	   return "NOK";
        	
-       device.setRegId(regID);
-       service.saveOrUpdate(device);
+//       device.setRegId(regID);
+//       service.saveOrUpdate(device);
+       service.updateDeviceByImei(imei,regID);
        return "OK";
    	}
     

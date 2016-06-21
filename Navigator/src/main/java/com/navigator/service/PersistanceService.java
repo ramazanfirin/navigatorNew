@@ -27,7 +27,7 @@ public interface PersistanceService {
 	public List<User> searchUser(String username) throws Exception;
 	public List<Device> searchDevice(String msisdn) throws Exception;
 	public List<Device> getDevices() throws Exception;
-	
+	public void updateDeviceByImei(String imei,String id) throws Exception;
 	
 	public List<Vehicle> searchVehicle(String plate) throws Exception;
 	public List<Vehicle> getVechiles() throws Exception;
@@ -37,7 +37,7 @@ public interface PersistanceService {
 	public List<Branch> getBranchList() throws Exception;
 	public Branch getBranch(Long id) throws Exception;
 	
-	public List<Order> searchOrder(Date start,Date End) throws Exception;
+	public List<Order> searchOrder(Date start,Date End,String status) throws Exception;
 	public List<Order> getOpenOrders(String imei,boolean checkCompany) throws Exception;
 	
 	public Device getDeviceByImei(String imei,boolean checkCompany) throws Exception;

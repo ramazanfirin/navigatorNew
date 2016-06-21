@@ -1,14 +1,18 @@
 package com.navigator.dao;
 
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +58,11 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 
 		public void saveOrUpdate(Object user) throws Exception {
 			BasicObject o = (BasicObject)user;
-			o.setCompany(getCompany());
+			Company company = getCompany();
+			if(company == null)
+				company = o.getCompany();
+			
+			o.setCompany(company);
 			hibernateTemplate.saveOrUpdate(user);
 			
 		}
@@ -168,13 +176,48 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		}
 
 
-		public List<Order> searchOrder(Date start, Date End) throws Exception {
-			String query = 	"from Order as c where 1=1 and  c.company.id="+ getCompanyId()+"and  c.enabled=true";
+		public List<Order> searchOrder(Date start, Date End,String status) throws Exception {
+			String query = 	"from Order as c where 1=1 and  c.company.id=:companyid and  c.enabled=true";
 			if(start!=null)
-				query = query + "and c.date > "+start.getTime();
+				query = query + " and c.date > :startDate ";
 			if(End!=null)
-				query = query + "and c.date < "+End.getTime();
-			return getHibernateTemplate().find(query);
+				query = query + " and c.date < :endDate ";
+			
+			if(!"all".equals(status))
+				query = query + " and c.status.id =:statusid ";
+			
+			query = query+" order by c.date desc";
+			Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession(). 
+					createQuery(query)
+	                   .setParameter("companyid", getCompanyId());
+	                   
+	                   
+	        if(start!=null)
+	        	updateQuery.setParameter("startDate", start);
+	        if(End!=null)
+	        	updateQuery.setParameter("endDate", End);			
+	        if(!"all".equals(status))
+	        	updateQuery.setParameter("statusid", new Long(status));		
+			
+			//return getHibernateTemplate().find(updateQuery);
+	       
+	        List customers = getHibernateTemplate().executeFind(new HibernateCallback<List>() {
+	            @Override
+	            public List doInHibernate(Session session) throws HibernateException, SQLException {
+	                Query query = session.createQuery(
+	                        "select distinct ci.customer " +
+	                                "from CustomerInvoice ci " +
+	                                "where ci.name = :name and ci.id in (:ids) "
+	                );
+	                query.setParameter("name", name);
+	                query.setParameterList("ids", ids);
+	                return query.list();
+	            }
+	    });
+	        
+	        
+	        
+			return (List<Order>)updateQuery.list();
 		}
 
 
@@ -330,6 +373,17 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		@Override
 		public Branch getBranch(Long id) throws Exception {
 			return (Branch)getHibernateTemplate().get(Branch.class, id);
+		}
+
+
+		@Override
+		public void updateDeviceByImei(String imei, String id) throws Exception {
+			Query updateQuery = getSession().createQuery("update Device d set d.regId = :regId where d.imei = :imei")
+	                   .setParameter("regId", id)
+	                   .setParameter("imei", imei);
+		
+			int noOfUpdatedRows = updateQuery.executeUpdate();
+			
 		}
         
 

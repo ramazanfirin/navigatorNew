@@ -83,8 +83,8 @@ public class PersistanceServiceImpl implements PersistanceService {
 		return persistanceDao.getBranchList();
 	}
 
-	public List<Order> searchOrder(Date start, Date End) throws Exception {
-		return persistanceDao.searchOrder(start, End);
+	public List<Order> searchOrder(Date start, Date End,String status) throws Exception {
+		return persistanceDao.searchOrder(start, End,status);
 	}
 
 	public List<Order> getOpenOrders(String imei,boolean checkCompany) throws Exception {
@@ -192,6 +192,12 @@ public class PersistanceServiceImpl implements PersistanceService {
 	@Override
 	public Branch getBranch(Long id) throws Exception {
 		return persistanceDao.getBranch(id);
+	}
+
+	@Override
+	public void updateDeviceByImei(String imei, String id) throws Exception {
+		persistanceDao.updateDeviceByImei(imei, id);
+		
 	}
 
 
