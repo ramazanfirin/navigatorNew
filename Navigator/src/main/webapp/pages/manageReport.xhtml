@@ -20,10 +20,10 @@
   
     <h:panelGrid columns="2" >  
 	    <h:outputLabel value="İLk Tarih" ></h:outputLabel>  
-		<p:calendar value="#{reportController.startDate}" showOn="button" style="width:250px;"> </p:calendar>
+		<p:calendar value="#{reportController.startDate}" showOn="button" style="width:250px;" pattern="dd/MM/yyyy" timeZone="GMT+3"> </p:calendar>
 		
 		<h:outputLabel value="Son Tarih" ></h:outputLabel>  
-		<p:calendar value="#{reportController.endDate}" showOn="button"> </p:calendar>
+		<p:calendar value="#{reportController.endDate}" showOn="button" pattern="dd/MM/yyyy" timeZone="GMT+3"> </p:calendar>
 		
 		<h:outputLabel value="Durum" ></h:outputLabel>  
 		<p:selectOneMenu id="il" value="#{reportController.status}" style="width:250px;" required="true" requiredMessage="Durum Bos Olmaz">
@@ -82,7 +82,9 @@
         
 
         <p:column headerText="Tarih" style="width:24%">
-            <h:outputText value="#{userItem.date}" />
+            <h:outputText value="#{userItem.date}" >
+            	<f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT+3"/>
+        	</h:outputText>
         </p:column>
         
         <p:column headerText="Durum" style="width:24%">

@@ -176,48 +176,66 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 		}
 
 
-		public List<Order> searchOrder(Date start, Date End,String status) throws Exception {
-			String query = 	"from Order as c where 1=1 and  c.company.id=:companyid and  c.enabled=true";
-			if(start!=null)
-				query = query + " and c.date > :startDate ";
-			if(End!=null)
-				query = query + " and c.date < :endDate ";
-			
-			if(!"all".equals(status))
-				query = query + " and c.status.id =:statusid ";
-			
-			query = query+" order by c.date desc";
-			Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession(). 
-					createQuery(query)
-	                   .setParameter("companyid", getCompanyId());
-	                   
-	                   
-	        if(start!=null)
-	        	updateQuery.setParameter("startDate", start);
-	        if(End!=null)
-	        	updateQuery.setParameter("endDate", End);			
-	        if(!"all".equals(status))
-	        	updateQuery.setParameter("statusid", new Long(status));		
+		public List<Order> searchOrder(final Date start, final Date End,final String status) throws Exception {
+//			String query = 	"from Order as c where 1=1 and  c.company.id=:companyid and  c.enabled=true";
+//			if(start!=null)
+//				query = query + " and c.date > :startDate ";
+//			if(End!=null)
+//				query = query + " and c.date < :endDate ";
+//			
+//			if(!"all".equals(status))
+//				query = query + " and c.status.id =:statusid ";
+//			
+//			query = query+" order by c.date desc";
+//			Query updateQuery = getHibernateTemplate().getSessionFactory().getCurrentSession(). 
+//					createQuery(query)
+//	                   .setParameter("companyid", getCompanyId());
+//	                   
+//	                   
+//	        if(start!=null)
+//	        	updateQuery.setParameter("startDate", start);
+//	        if(End!=null)
+//	        	updateQuery.setParameter("endDate", End);			
+//	        if(!"all".equals(status))
+//	        	updateQuery.setParameter("statusid", new Long(status));		
 			
 			//return getHibernateTemplate().find(updateQuery);
 	       
 	        List customers = getHibernateTemplate().executeFind(new HibernateCallback<List>() {
 	            @Override
 	            public List doInHibernate(Session session) throws HibernateException, SQLException {
-	                Query query = session.createQuery(
-	                        "select distinct ci.customer " +
-	                                "from CustomerInvoice ci " +
-	                                "where ci.name = :name and ci.id in (:ids) "
-	                );
-	                query.setParameter("name", name);
-	                query.setParameterList("ids", ids);
-	                return query.list();
+	            	String query = 	"from Order as c where 1=1 and  c.company.id=:companyid and  c.enabled=true";
+	    			if(start!=null)
+	    				query = query + " and c.date > :startDate ";
+	    			if(End!=null)
+	    				query = query + " and c.date < :endDate ";
+	    			
+	    			if(!"all".equals(status))
+	    				query = query + " and c.status.id =:statusid ";
+	    			
+	    			query = query+" order by c.date desc";
+	            	
+	            	
+	            	Query updateQuery = session.createQuery(query);
+	            	updateQuery.setParameter("companyid", getCompanyId());
+	            	
+	            	if(start!=null)
+	    	        	updateQuery.setParameter("startDate", start);
+	    	        if(End!=null)
+	    	        	updateQuery.setParameter("endDate", End);			
+	    	        if(!"all".equals(status))
+	    	        	updateQuery.setParameter("statusid", new Long(status));		
+	    			
+	                return updateQuery.list();
 	            }
+	            
+	            
 	    });
 	        
 	        
 	        
-			return (List<Order>)updateQuery.list();
+			//return (List<Order>)updateQuery.list();
+			return (List<Order>)customers;
 		}
 
 

@@ -11,6 +11,10 @@ id="WebApp_ID" version="2.5">
 		    /WEB-INF/application-context-security.xml
 	     </param-value>
   </context-param>
+  <context-param>
+    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+    <param-value>true</param-value>
+</context-param>
   <listener>
     <listener-class>
 			org.springframework.web.context.ContextLoaderListener
