@@ -109,6 +109,9 @@ public class Navigator2 extends BaseController implements Serializable {
 	
 	String il;
 	
+	String descriptionEndSentences=" KAT:... , DAİRE:...,\n VAKA BİLGİSİ:...";
+
+	String descriptionEmptySentences = "IlCE:... ,\nMAHALLE:..., \nSOKAK:..., \nBİNA:...,";
 	public Branch getBranch() {
 		return branch;
 	}
@@ -144,6 +147,8 @@ public class Navigator2 extends BaseController implements Serializable {
 			dataList.add(new NameValuePair("Boylam", lng));
 			
 			for (int i=2;i<list.size();i++) {
+				if(i==3)
+					continue;
 				KeyValueDTO keyValueDTO = list.get(i);
 				dataList.add(new NameValuePair("", keyValueDTO.getValue()));
 			}
@@ -360,6 +365,22 @@ public void investigatePoint() throws Exception{
 		}
 	}
 
+public void prepareDescription(Marker marker){
+	ArrayList<NameValuePair> list = (ArrayList<NameValuePair>)marker.getData();
+	String temp="";
+	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+		NameValuePair nameValuePair = (NameValuePair) iterator.next();
+		if(nameValuePair.getName().equals("Enlem") || nameValuePair.getName().equals("Boylam"))
+			continue;
+	
+		temp = temp+nameValuePair.getValue()+" ,\n";
+	}
+	if(temp.equals(""))
+		description =descriptionEmptySentences +descriptionEndSentences;
+	else
+		description=temp + descriptionEndSentences;
+}
+
 public void onMarkerSelect(OverlaySelectEvent event) {
 	try {
 		marker = (Marker) event.getOverlay();
@@ -373,6 +394,9 @@ public void onMarkerSelect(OverlaySelectEvent event) {
 		branch = new Branch();
 		if(branchList.size()>0)
 		vehicleOptions= prepareVehicleList(branchList.get(0).getId());
+		
+		prepareDescription(marker);
+		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

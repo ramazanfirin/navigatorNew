@@ -359,6 +359,7 @@ public class CityCurfUtil {
 //		returnValue = returnValue.replace("\"}", "&");
 		
 		returnValue = returnValue.replace("|", "&");
+		returnValue = returnValue.replace("\"}", "");
 		String[] values= returnValue.split("&");
 		String a  =values[0];
 		a=a.replace("{\"d\":\"", "");
