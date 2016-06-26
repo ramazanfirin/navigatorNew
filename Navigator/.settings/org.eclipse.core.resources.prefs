@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//src/main/java/com/nagivator/web/bean/ForgetPasswordController.java=UTF-8
 encoding//src/main/java/com/nagivator/web/bean/LoginController.java=UTF-8
 encoding//src/main/java/com/nagivator/web/bean/Navigator2.java=UTF-8
+encoding//src/main/java/com/nagivator/web/bean/Navigator3.java=UTF-8
 encoding//src/main/java/com/nagivator/web/bean/ReportController.java=UTF-8
 encoding//src/main/java/com/nagivator/web/bean/ResetPasswordController.java=UTF-8
 encoding//src/main/java/com/nagivator/web/bean/UserController.java=UTF-8

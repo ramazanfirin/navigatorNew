@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
+import com.nagivator.model.KeyValueDTO;
 import com.nagivator.model.Order;
 
 
@@ -148,5 +149,15 @@ request.setHeader("Content-Type", "text/html; charset=UTF-8");
 		}
 		
 		return "";
+	}
+	
+	public static List<SelectItem> convertSelectItem(List<KeyValueDTO> list){
+		List<SelectItem> returnList = new ArrayList<SelectItem>();
+		
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			KeyValueDTO keyValueDTO = (KeyValueDTO) iterator.next();
+			returnList.add(new SelectItem(keyValueDTO.getKey(),keyValueDTO.getValue()));
+		}
+		return returnList;
 	}
 }

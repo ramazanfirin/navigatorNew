@@ -31,26 +31,32 @@ import com.nagivator.model.Order;
 import com.nagivator.model.OrderPriority;
 import com.nagivator.model.Poi;
 import com.nagivator.model.Vehicle;
+import com.navigator.service.CbsDataService;
+import com.navigator.service.KayseriCbsDataServiceImpl;
+import com.navigator.service.KonyaDataServiceImpl;
 import com.navigator.util.CityCurfTest;
 import com.navigator.util.CityCurfUtil;
 import com.navigator.util.GeoUtil;
 import com.navigator.util.NameValuePair;
 import com.navigator.util.Util;
 
-@ManagedBean(name="navigator3")
+@ManagedBean(name="navigator2")
 @SessionScoped
-public class Navigator2 extends BaseController implements Serializable {
+public class Navigator3 extends BaseController implements Serializable {
+	
+	CbsDataService cbsDataService;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 
-	private static Logger LOGGER =Logger.getLogger(Navigator2.class);
+	private static Logger LOGGER =Logger.getLogger(Navigator3.class);
 	
-	public Navigator2() throws Exception {
+	public Navigator3() throws Exception {
 		super();
+		cbsDataService = new KayseriCbsDataServiceImpl();
 		try {
 			ilceList = (List<SelectItem>)FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("ilceList");
 			if(ilceList==null|| ilceList.size()==0){
-				ilceList = CityCurfTest.getIlceList();
+				ilceList = cbsDataService.getIlceList();
 				FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put("ilceList", ilceList);
 			}
 			
@@ -139,7 +145,7 @@ public class Navigator2 extends BaseController implements Serializable {
 	public void selectGeneralSearchItem(){
 		System.out.println(generalSearchPlace.getKey());
 		try {
-			List<KeyValueDTO> list = CityCurfUtil.genelAramaByNumber(generalSearchPlace.getKey());
+			List<KeyValueDTO> list = cbsDataService.genelAramaByNumber(generalSearchPlace);
 			String lat = list.get(1).getValue();
 			String lng = list.get(0).getValue();
 			List<NameValuePair> dataList  =new ArrayList<NameValuePair>();
@@ -165,7 +171,7 @@ public class Navigator2 extends BaseController implements Serializable {
 	
 	public void searchGeneral(){
 		try {
-			generalSearchList = CityCurfUtil.genelArama(generalSearch);
+			generalSearchList = cbsDataService.genelArama(generalSearch);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -304,7 +310,7 @@ public class Navigator2 extends BaseController implements Serializable {
 	public void getKapiNo() throws Exception{
 		try {
 		
-			List<String> list= CityCurfUtil.getKapiNo(bina);
+			List<String> list= cbsDataService.getKapiNo(bina);
 			//FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, "koordinar tespit edildi",""));
 			String lat=list.get(0);
 			String lng=list.get(1);
@@ -558,7 +564,7 @@ public void ilceOnChange() throws Exception{
 		
 		try {
 			//mahalleList = CityCurfUtil.getMahalleList(ilce);
-			mahalleList = CityCurfTest.getMahalleList(ilce);
+			mahalleList = cbsDataService.getMahalleList(ilce);
 			sokakList  = new ArrayList<SelectItem>();
 			binaList  = new ArrayList<SelectItem>();
 			System.out.println("onchange calisti");
@@ -574,7 +580,7 @@ public void ilceOnChange() throws Exception{
 		
 		try {
 			//sokakList = CityCurfUtil.getSokakList(mahalle);
-			sokakList = CityCurfTest.getSokakList(mahalle);
+			sokakList = cbsDataService.getSokakList(mahalle);
 			binaList  = new ArrayList<SelectItem>();
 			System.out.println("onchange calisti");
 		} catch (Exception e) {
@@ -589,7 +595,7 @@ public void ilceOnChange() throws Exception{
 		
 		try {
 			//binaList = CityCurfUtil.getSokakList(sokak);
-			binaList = CityCurfTest.getBinaList(sokak);
+			binaList = cbsDataService.getBinaList(sokak,mahalle);
 			System.out.println("onchange calisti");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -599,12 +605,31 @@ public void ilceOnChange() throws Exception{
 		
 	}
 	
+	public void clearSelectItems() throws Exception{
+		ilceList.clear();
+		ilceList.addAll(cbsDataService.getIlceList());
+		mahalleList.clear();
+		sokakList.clear();
+		binaList.clear();
+	}
+	
 public void ilOnChange() throws Exception{
 		
 		try {
-			if(!il.equals("KAYSERİ"))
+			if(il.equals("KAYSERİ")){
+				cbsDataService = new KayseriCbsDataServiceImpl();
+			clearSelectItems();
+			setCenter("38.72956137445706", "35.47995459062804");
+			setZoom("14");
+			}else if(il.equals("KONYA")){
+				cbsDataService = new KonyaDataServiceImpl();
+				clearSelectItems();
+				setCenter("37.87382", "32.49094");
+				setZoom("14");
+			}else{
 				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, il+" ili üzerindeki çalışma devam etmektedir",il+" ili üzerindeki çalışma devam etmektedir"));
-			il="kayseri";
+				il="KAYSERİ";
+			}	
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hata Olustu","Hata Olustu"));

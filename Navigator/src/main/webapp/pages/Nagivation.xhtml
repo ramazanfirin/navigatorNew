@@ -50,8 +50,9 @@ min-height: 150px;
         	
         	<h:outputLabel value="İl"> </h:outputLabel>
         	<h:outputLabel value=":"> </h:outputLabel>
-        	<p:selectOneMenu id="il" value="#{navigator2.il}" style="width:150px;" required="true" requiredMessage="İlce Bos Olmaz">
+        	<p:selectOneMenu id="il"  value="#{navigator2.il}" style="width:150px;" required="true" requiredMessage="İlce Bos Olmaz">
 	           <f:selectItem itemLabel="KAYSERİ" itemValue="KAYSERİ"/>
+	           <f:selectItem itemLabel="KONYA" itemValue="KONYA"/>
 	           <f:selectItem itemLabel="İSTANBUL" itemValue="İSTANBUL"/>
 	           <f:selectItem itemLabel="İZMİR" itemValue="İZMİR"/>
 	            <f:selectItem itemLabel="DENİZLİ" itemValue="DENİZLİ"/>
@@ -60,7 +61,7 @@ min-height: 150px;
 	                 <f:selectItem itemLabel="KAHRAMANMARAŞ" itemValue="KAHRAMANMARAŞ"/>
 	                  <f:selectItem itemLabel="BALIKESİR" itemValue="BALIKESİR"/>
 	                   <f:selectItem itemLabel="SAKARYA" itemValue="SAKARYA"/>
-	            <p:ajax event="change" update="il"  listener="#{navigator2.ilOnChange}" />
+	            <p:ajax event="change" update="detay"  listener="#{navigator2.ilOnChange}" />
         	</p:selectOneMenu>
         	
         	
