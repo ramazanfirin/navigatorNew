@@ -17,10 +17,16 @@ public class CityCurfTest {
 
 	public static void main(String[] args) {
 		try {
-			//parseIlce();
+		List<SelectItem> items =	getIlceList();
+		for (Iterator iterator = items.iterator(); iterator.hasNext();) {
+			SelectItem selectItem = (SelectItem) iterator.next();
+			System.out.println(selectItem.getLabel() + " "+ selectItem.getValue());
+		}
+		
+		
 			//getMahalleList("NO=124&AD=KEYKUBAT MAH.");
 			//parseSokak();
-			getBinaList("NO=251807&AD=");
+			//getBinaList("NO=251807&AD=");
 			//getKapiNo();
 			
 		} catch (Exception e) {
@@ -45,7 +51,7 @@ public class CityCurfTest {
 //			if(element.attributes().size()>0)
 //				continue;
 
-				String ilce  = new String(element.attr("title").getBytes(), "UTF-8");
+				String ilce  = new String(element.attr("title"));
 				String onclick = element.attr("onclick");
 				onclick = onclick.replace("JsMahGoster", "");
 				onclick = onclick.replace("(", "");
@@ -78,7 +84,7 @@ public class CityCurfTest {
 			Elements impress = doc.getElementsByAttributeValue("style", "border-width: 0px");
 			for (Iterator iterator = impress.iterator(); iterator.hasNext();) {
 				Element element = (Element) iterator.next();
-				String mahalle  = new String(element.attr("title").getBytes(), "UTF-8");
+				String mahalle  = new String(element.attr("title"));
 				
 				
 			
@@ -116,7 +122,7 @@ public class CityCurfTest {
 			Elements impress = doc.getElementsByClass("cursorhand");
 			for (Iterator iterator = impress.iterator(); iterator.hasNext();) {
 				Element element = (Element) iterator.next();
-				String sokak  = new String(element.attr("title").getBytes(), "UTF-8");
+				String sokak  = new String(element.attr("title"));
 				
 				
 			
@@ -179,7 +185,7 @@ public class CityCurfTest {
 				
 				newString = StringEscapeUtils.unescapeHtml4(acs);
 				//newString = StringEscapeUtils.escapeHtml4(newString);
-				newString = new String(newString.getBytes(),"UTF-8");
+				newString = new String(newString);
 				bina=bina+"-"+newString;
 				
 				

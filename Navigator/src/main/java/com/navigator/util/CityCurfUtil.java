@@ -413,7 +413,9 @@ public class CityCurfUtil {
 		
 		//List<NameValuePair> list = getInformaitonOfCoordinates2("35.5063445890609", "38.7264522982779");
 		//List<KeyValueDTO> list =genelArama("kıranardı");
-		genelAramaByNumber("13840");
+		//genelAramaByNumber("13840");
 		System.out.println("ddd");
+	
+		getIlceList();
 	}
 }
