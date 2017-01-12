@@ -1,14 +1,17 @@
 package com.nagivator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.sql.rowset.serial.SerialArray;
 
 
-public class BasicObject{
+
+public class BasicObject implements Serializable{
 
 	private Long id;
 	private String name;

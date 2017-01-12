@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -50,9 +51,17 @@ public class Navigator3 extends BaseController implements Serializable {
 
 	private static Logger LOGGER =Logger.getLogger(Navigator3.class);
 	
-	public Navigator3() throws Exception {
-		super();
-		cbsDataService = new KayseriCbsDataServiceImpl();
+	@PostConstruct
+	public void init(){
+		if(getCompanyId()==1){
+			cbsDataService = new KayseriCbsDataServiceImpl();
+			setIl("KAYSERI");
+			getMap().setCenter("38.72956137445706, 35.47995459062804");
+		}else if(getCompanyId()==2){
+			cbsDataService = new KonyaDataServiceImpl();
+			setIl("KONYA");
+			getMap().setCenter("37.868667, 32.499605");
+		}
 		try {
 			ilceList = (List<SelectItem>)FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("ilceList");
 			if(ilceList==null|| ilceList.size()==0){
@@ -64,6 +73,12 @@ public class Navigator3 extends BaseController implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public Navigator3() throws Exception {
+		super();
+		
 	}
 
 	/**
