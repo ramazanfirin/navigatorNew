@@ -31,7 +31,7 @@ public class KonyaUtil {
 
 	
 	public static void main(String[] args) throws Exception {
-		getIlceList();
+	//();
 		//System.out.println(ilceList());
 		
 	//	getMahalleList("14");
@@ -43,7 +43,7 @@ public class KonyaUtil {
 	//getKapiNoList("1077444","1610");
 	//System.out.println(sokakList);
 	
-	//genelArama("duygu");
+	genelArama("ALADA");
 	
 	//getToken();
 	}
@@ -398,31 +398,71 @@ post.setHeader("Referer", "https://kentrehberi.konya.bel.tr/");
 	
 	public static List<KeyValueDTO> genelArama(String s) throws Exception{
 		List<KeyValueDTO> resultList = new ArrayList<KeyValueDTO>();
-		String url = "http://kentrehberi.konya.bel.tr/mapviewer/maplink/kbb/helper/suggest.jsp?Keyword="+s;
+		String url = "https://kentrehberi.konya.bel.tr/search/globalSearch";		
 		
-		String result = Util.getUrl(url);
-		System.out.println(result);
-		result = result.replace("fields", "\"fields\"");
-		result = result.replace("data", "\"data\"");
-		result = result.replace("id", "\"id\"");
-		result = result.replace("'", "\"");
-		result = result.replace("ft", "\"ft\"");
-		result = result.replace("x", "\"x\"");
-		result = result.replace("y:", "\"y\":");
-		result = result.replace("name", "\"name\"");
+	
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
 		
-		System.out.println(result);
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(result);
-		JSONArray array = (JSONArray) obj;
+		String entity="{\"query\":"+"\""+s+"\"}";
+		StringEntity input = new StringEntity(entity);
+		input.setContentType("application/json");
+		post.setEntity(input);
+
+	
+	
+		post.setHeader("Accept", "application/json, text/plain, */*");
+		post.setHeader("Accept-Encoding", "gzip,deflate");
+		post.setHeader("Accept-Language", "en-US,en;q=0.8");
+		post.setHeader("Connection", "keep-alive");
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		post.setHeader("Host", "kentrehberi.konya.bel.tr");
+//		//post.setHeader("X-Requested-With", "XMLHttpRequest");
+	post.setHeader("Referer", "https://kentrehberi.konya.bel.tr/");
+		post.setHeader("Origin", "https://kentrehberi.konya.bel.tr");
+		post.setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlaGJlci52YXRhbmRhcyIsImlzc3VlZF9hdCI6IjIwMTctMDEtMTJUMTU6MTY6NTAuMTYzKzAyOjAwIiwiZXhwaXJlc19hdCI6IjIwMTctMDEtMTJUMTU6NDA6NTAuMTYzKzAyOjAwIn0=.HBcOSL/3+1OAXkPbhoNRum6bhMBQc6tmWdCMB6ik+hc=");
+		//post.setHeader("Cookie","__utma=123124625.1069603549.1484122413.1484122413.1484122413.1; __utmz=123124625.1484122413.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided); token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlaGJlci52YXRhbmRhcyIsImlzc3VlZF9hdCI6IjIwMTctMDEtMTFUMTU6MTE6MDUuMDQwKzAyOjAwIiwiZXhwaXJlc19hdCI6IjIwMTctMDEtMTFUMTU6MzU6MDUuMDQxKzAyOjAwIn0%3D.h6LcXu1zs9hj9kdirGTf1L6ZxYMna0d7KoIKsPC8zVQ%3D");
+		post.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.65 Safari/537.36");
+	//	
+		HttpResponse response = client.execute(post);
 		
-		//JSONArray array = (JSONArray)jsonObject.get("fields");
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject item = (JSONObject)array.get(i);
-			double x = (double)item.get("x");
-			double y = (double)item.get("y");
-			resultList.add(new KeyValueDTO(String.valueOf(x)+" "+String.valueOf(y), (String)item.get("name")));
+		BufferedReader rd = new BufferedReader(
+	         new InputStreamReader(response.getEntity().getContent()));
+
+		StringBuffer result2 = new StringBuffer();
+		String line = "";
+		while ((line = rd.readLine()) != null) {
+			result2.append(line);
 		}
+		
+	 
+	 String aa = toJson(result2.toString());
+	 System.out.println(aa);
+	 
+	 JSONParser parser = new JSONParser();
+		Object obj = parser.parse(aa);
+		JSONArray jsonArray = (JSONArray) obj;
+		
+		//JSONArray jsonArrayItems = (JSONArray)jsonobject.get("mahalleler");
+		
+		for (int i = 0; i < jsonArray.size(); i++) {
+			JSONObject object = (JSONObject)jsonArray.get(i);
+			JSONArray items= (JSONArray)object.get("items");
+			for (int j = 0; j < items.size(); j++) {
+				JSONObject item = (JSONObject)items.get(j);
+				
+				JSONObject object2 = (JSONObject)item.get("location");
+				JSONArray asd= (JSONArray)object2.get("coordinates");
+				String id=String.valueOf(asd.get(0))+" "+String.valueOf(asd.get(1));
+				String name = (String)item.get("searchfield");
+				resultList.add(new KeyValueDTO(String.valueOf(id), name));
+			}
+		
+			
+			
+		}
+		
+		System.out.println("dikkat");
 		
 		return resultList;
 	}
