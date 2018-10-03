@@ -191,7 +191,7 @@ public class CityCurfUtil {
 	public static List<String> getKapiNo(String binaNo) throws Exception{
 		List<String> returnList= new ArrayList<String>();
 		
-		String url = "http://cbs.kayseri.bel.tr/Rehber.aspx/GetKapiBina";
+		String url = "https://cbs.kayseri.bel.tr/Rehber.aspx/GetKapiBina";
 		//url = "http://localhost/Rehber.aspx/GetKapiBina";
 		
 		HttpClient client = new DefaultHttpClient();
