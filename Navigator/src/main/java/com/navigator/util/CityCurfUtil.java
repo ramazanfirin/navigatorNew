@@ -4,16 +4,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.model.SelectItem;
 
-import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreProtocolPNames;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -240,7 +240,7 @@ public class CityCurfUtil {
 	public static List<KeyValueDTO> genelArama(String string) throws Exception{
 		List<KeyValueDTO> returnList= new ArrayList<KeyValueDTO>();
 		
-		String url = "http://cbs.kayseri.bel.tr/Rehber.aspx/JSGenelArama";
+		String url = "https://cbs.kayseri.bel.tr/Rehber.aspx/JSGenelArama";
 		//url = "http://localhost/Rehber.aspx/JSGenelArama";
 		
 		HttpClient client = new DefaultHttpClient();
@@ -276,34 +276,44 @@ public class CityCurfUtil {
 		byte[] utfString = result.toString().getBytes("US-ASCII") ;
 		String stringaaa = new String(utfString, "UTF-8");
 		
+		result = removeUTFCharacters(result.toString());
+		
 		String returnValue="";
-		returnValue = result.toString().replace("\\u003ca href=\\u0027javascript:JSAramaGetirByNumber(", "");
-		returnValue = returnValue.replace(" /\\u003e\\u003c/a\\u003e|\\u003ca href=\\u0027javascript:JSAramaGetirByNumber(", "-");
-		returnValue = returnValue.replace(" style=\\u0027border-width:0\\u0027 ","");
-		returnValue = returnValue.replace(")\\u0027\\u003e\\u003cimg src=\\u0027leaflet-0.7.2/images/marker-icon.png\\u0027","");
-		returnValue = returnValue.replace(")\\u0027 class=\\u0027linknone\\u0027\\u003e", "-");
+		returnValue = result.toString().replaceAll("<img src='/assets/global/plugins/leaflet-0.7.2/images/marker-icon.png' style='border-width:0; width:15px;' />", "");
+		returnValue = returnValue.replaceAll("class='linknone'", "");
+		returnValue = returnValue.replaceAll("a href='javascript:JSAramaGetirByNumber","");
+		returnValue = returnValue.replaceAll("></a>|<", "");
 		
-		returnValue = returnValue.replace("\\u003c/a\\u003e", "");
-		returnValue = returnValue.replace("/\\u003e|", "-");
+		returnValue = returnValue.replaceAll("/a>", "");
+		returnValue = returnValue.replace("{\"d\":\"", "").replace("\"}","");
 		returnValue = returnValue.replace("££", "&");
-		
-				
-		returnValue = returnValue.replace("{\"d\":\"", "");
-		returnValue = returnValue.replace("\"}", "&");
 		
 		String[] values= returnValue.split("&");
 		
 		for (int i = 0; i < values.length; i++) {
-			String[] temp  =values[i].split("@");
+			String[] temp  =values[i].split("\'");
 			
-			String[] a = temp[0].split("-");
+			String a = temp[0].replace("(", "").replace(")","");
+			String b = temp[2].replace(">", "");
 			
-			returnList.add(new KeyValueDTO(a[1], a[2]));
+			returnList.add(new KeyValueDTO(a, b));
 			
 		}
 		
 		return returnList;
 	}
+	
+	public static StringBuffer removeUTFCharacters(String data){
+		Pattern p = Pattern.compile("\\\\u(\\p{XDigit}{4})");
+		Matcher m = p.matcher(data);
+		StringBuffer buf = new StringBuffer(data.length());
+		while (m.find()) {
+		String ch = String.valueOf((char) Integer.parseInt(m.group(1), 16));
+		m.appendReplacement(buf, Matcher.quoteReplacement(ch));
+		}
+		m.appendTail(buf);
+		return buf;
+		}
 	
 	public static List<KeyValueDTO> genelAramaByNumber(String string) throws Exception{
 		List<KeyValueDTO> returnList= new ArrayList<KeyValueDTO>();
@@ -414,8 +424,9 @@ public class CityCurfUtil {
 		//List<NameValuePair> list = getInformaitonOfCoordinates2("35.5063445890609", "38.7264522982779");
 		//List<KeyValueDTO> list =genelArama("kıranardı");
 		//genelAramaByNumber("13840");
-		System.out.println("ddd");
+		//System.out.println("ddd");
 	
+		genelArama("arzu");
 		getIlceList();
 	}
 }

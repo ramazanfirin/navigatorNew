@@ -253,6 +253,7 @@ public class PersistanceDaoImpl extends HibernateDaoSupport implements Persistan
 				query = query+" and c.company.id="+ getCompanyId();
 			
 			query = query+" and c.status.id in(1,2)";
+			query = "from Order as c"; //sil
 			return getHibernateTemplate().find(query);
 		}
 
